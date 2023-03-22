@@ -8,7 +8,7 @@ import sys
 
 # note: recommended not to retrieve more than 10 countries in one run
 
-# example run command: <python3 altura-obscura-scraper.py 0 1 algeria.csv> where 0 is the index to
+# example run command: <python3 atlas-obscura-scraper.py 0 1 algeria.csv> where 0 is the index to
 # start at and 1 is the index to end at. this command would return data for only algeria.
 # algeria.csv is the name and location of the output file.
 
