@@ -3,19 +3,22 @@
 
 <head>
     <title>Off the Beaten Path</title>
-    <!-- <script src="https://d3js.org/d3.v7.min.js"></script> -->
 
-    <link rel="stylesheet" type="text/css" href="..static/styles/site.css">
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
 </head>
 
 <body>
     <main>
         <h1>Off the Beaten Path</h1>
 
-        <label for="country">Where do you want to go?</label>
-        <input list="datalist" type="text" onkeyup="ac(this.value)" />
-        <datalist id="datalist"></datalist>
-        <button type="submit">Submit</button>
+        <div class="scroll-box">
+            <div class="user">
+                <label class="user-field" for="country">Where do you want to go?</label>
+                <input list="datalist" type="text" onkeyup="ac(this.value)" />
+                <datalist class="user-field" id="datalist"></datalist>
+                <button class="user-field" type="submit">Submit</button>
+            </div>
+        </div>
     </main>
     <script>
         var tags = [
