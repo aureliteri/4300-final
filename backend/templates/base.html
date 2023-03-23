@@ -12,12 +12,12 @@
         <h1>Off the Beaten Path</h1>
 
         <div class="scroll-box">
-            <div class="user">
-                <label class="user-field" for="country">Where do you want to go?</label>
-                <input list="datalist" type="text" onkeyup="ac(this.value)" />
+            <form class="user">
+                <label id="country-label" class="user-field" for="country">Where do you want to go?</label>
+                <input list="datalist" id="country-input" type="text" onkeyup="ac(this.value)" />
                 <datalist class="user-field" id="datalist"></datalist>
-                <button class="user-field" type="submit">Submit</button>
-            </div>
+                <button class="user-field" id="submit-country" type="submit">Submit</button>
+            </form>
         </div>
     </main>
     <script>
@@ -46,6 +46,16 @@
                 }
             }
         }
+
+        var countryInput = document.getElementById("country-input");
+        document.querySelector('form.user').addEventListener('submit', function (e) {
+            e.preventDefault();
+            console.log(countryInput.value);
+
+            // document.getElementById("submit-country").style.visibility = 'hidden';
+            // document.getElementById("country-input").style.visibility = 'hidden';
+            // document.getElementById("country-label").style.visibility = 'hidden';
+        });
     </script>
 </body>
 

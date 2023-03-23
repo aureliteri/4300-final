@@ -37,3 +37,7 @@ main {
     /* background-color: gray; */
     border: 1px solid gray;
 }
+
+.hidden {
+    display: none;
+}
