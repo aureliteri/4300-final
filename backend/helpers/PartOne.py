@@ -18,14 +18,14 @@ class PartOne:
       d['country'] = country
     return data
   
-  def build_vectorizer(max_features, stop_words, max_df=0.8, min_df=10, norm='l2'):
+  def build_vectorizer(self, max_features, stop_words, max_df=0.8, min_df= 10, norm='l2'):
      return TfidfVectorizer(max_features = max_features, 
                            stop_words = stop_words, 
                            max_df = max_df, 
                            min_df = min_df,
                            norm = norm)
   
-  def generate_tf_idf(self , tfidf_vec, array_with_country):
+  def generate_tf_idf(self, tfidf_vec, array_with_country):
     return tfidf_vec.fit_transform([d["description"] for d in array_with_country]).toarray()
 
 
@@ -37,17 +37,20 @@ class PartOne:
     ranked_ind = np.argsort(attarc_by_token)[::-1]
     return [index_to_vocab[ind] for ind in ranked_ind]
 
-  def generate_tags(self ,country_name1, country_name2):
+  def generate_tags(self, country_name1, country_name2):
     country_arr = [{},{}]
     for entry in self._array_with_country:
       if entry["country"] == country_name1:
         country_arr[0]["index"] = entry["index"]
         country_arr[0]["td_idf_array"] = self._attraction_by_token[entry["index"]]
-        self.generate_ranked_list(self._attraction_by_token[entry["index"]], self._index_to_vocab)
+        ranked_list = self.generate_ranked_list(self._attraction_by_token[entry["index"]], self._index_to_vocab)
+        country_arr[0]["ranked_words"] = ranked_list
       elif entry["country"] == country_name2:
         country_arr[1]["index"] = entry["index"]
         country_arr[1]["td_idf_array"] = self._attraction_by_token[entry["index"]]
-        self.generate_ranked_list(self._attraction_by_token[entry["index"]], self._index_to_vocab)
+        ranked_list = self.generate_ranked_list(self._attraction_by_token[entry["index"]], self._index_to_vocab)
+        country_arr[1]["ranked_words"] = ranked_list
+    return country_arr
 
 
     
