@@ -4,6 +4,7 @@ from flask import Flask, render_template, request
 from flask_cors import CORS
 from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
 from helpers.PartOne import *
+from helpers.PartTwo import *
 
 # ROOT_PATH for linking with all your files. 
 # Feel free to use a config.py or settings.py with a global export variable
@@ -13,9 +14,9 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..",os.curdir))
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
-MYSQL_USER_PASSWORD = "Gogo2001!"
+MYSQL_USER_PASSWORD = "america!"
 MYSQL_PORT = 3306
-MYSQL_DATABASE = "destinationDB"
+MYSQL_DATABASE = "atlasDB"
 
 mysql_engine = MySQLDatabaseHandler(MYSQL_USER,MYSQL_USER_PASSWORD,MYSQL_PORT,MYSQL_DATABASE)
 
@@ -40,6 +41,11 @@ def generate_tags(country_name1, country_name2):
     return partone.generate_tags(country_name1, country_name2)
 
 
+def generate_output(tags):
+    parttwo = PartTwo(PartOne._array_with_country, tags)
+    return parttwo
+
+
 def sql_search(table_name):
     query_sql = f"""SELECT * FROM {table_name}"""
     keys = ["index","attraction","location","blurb","url","description"]
@@ -49,7 +55,9 @@ def sql_search(table_name):
 @app.route("/")
 def home():
     tag_dict = generate_tags("Algeria", "Chad")
+    output = generate_output(tag_dict)
     print(tag_dict)
+    print(output)
     return None
 
 # @app.route("/episodes")
