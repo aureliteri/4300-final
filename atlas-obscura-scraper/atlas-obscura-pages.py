@@ -45,7 +45,7 @@ def get_description(driver, a_link):
     soup = BeautifulSoup(content, features="html.parser")
 
     description = ""
-
+    tags = ""
     # retrieve main body
     body1 = soup.find("div", {"id": "place-body"})
     if body1:
@@ -56,9 +56,9 @@ def get_description(driver, a_link):
     body2 = soup.find("div", {"class": "DDP__direction-copy"})
     if body2:
         for p in body2.find_all("p"):
-            description = description + " " + p.text.strip().replace('\xa0', ' ')
+            tags = tags + " " + p.text.strip().replace('\xa0', ' ')
 
-    return description.strip()
+    return description.strip(), tags.strip()
 
 
 # given a link to a country's page, returns a list with each attraction's information
@@ -114,9 +114,10 @@ def get_country_data(driver, country_link):
 
     index = 0
     for a_link in attraction_links:
-        description = get_description(driver, a_link)
+        description, tags = get_description(driver, a_link)
         entries[index].append('https://www.atlasobscura.com' + a_link)
         entries[index].append(description)
+        entries[index].append(tags)
         index += 1
     return entries
 
@@ -154,5 +155,5 @@ for country_link in sample_data:
         output.append(entry)
 
 # creating headers, outputting file
-header = ["attraction", "location", "blurb", "url", "description"]
+header = ["attraction", "location", "blurb", "url", "description", "tags"]
 pd.DataFrame(output).to_csv(output_file, index_label="index", header=header)
