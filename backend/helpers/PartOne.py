@@ -30,10 +30,10 @@ class PartOne:
 
 
   def generate_index_to_vocab(self, tfidf_vec, attraction_by_token):
-    return {i:v for i, v in enumerate(tfidf_vec.get_feature_names(attraction_by_token))}
+    return {i:v for i, v in enumerate(tfidf_vec.get_feature_names())}
 
 
-  def generate_ranked_list(attarc_by_token, index_to_vocab):
+  def generate_ranked_list(self, attarc_by_token, index_to_vocab):
     ranked_ind = np.argsort(attarc_by_token)[::-1]
     return [index_to_vocab[ind] for ind in ranked_ind]
 
@@ -41,11 +41,13 @@ class PartOne:
     country_arr = [{},{}]
     for entry in self._array_with_country:
       if entry["country"] == country_name1:
+        country_arr[0]['country_name'] = country_name1
         country_arr[0]["index"] = entry["index"]
         country_arr[0]["td_idf_array"] = self._attraction_by_token[entry["index"]]
         ranked_list = self.generate_ranked_list(self._attraction_by_token[entry["index"]], self._index_to_vocab)
         country_arr[0]["ranked_words"] = ranked_list
       elif entry["country"] == country_name2:
+        country_arr[0]['country_name'] = country_name2
         country_arr[1]["index"] = entry["index"]
         country_arr[1]["td_idf_array"] = self._attraction_by_token[entry["index"]]
         ranked_list = self.generate_ranked_list(self._attraction_by_token[entry["index"]], self._index_to_vocab)

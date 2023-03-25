@@ -48,7 +48,9 @@ def sql_search(table_name):
 
 @app.route("/")
 def home():
-    return generate_tags("Algeria", "Chad")
+    tag_dict = generate_tags("Algeria", "Chad")
+    print(tag_dict)
+    return None
 
 # @app.route("/episodes")
 # def episodes_search():
