@@ -47,7 +47,7 @@ class PartOne:
         ranked_list = self.generate_ranked_list(self._attraction_by_token[entry["index"]], self._index_to_vocab)
         country_arr[0]["ranked_words"] = ranked_list
       elif entry["country"] == country_name2:
-        country_arr[0]['country_name'] = country_name2
+        country_arr[1]['country_name'] = country_name2
         country_arr[1]["index"] = entry["index"]
         country_arr[1]["td_idf_array"] = self._attraction_by_token[entry["index"]]
         ranked_list = self.generate_ranked_list(self._attraction_by_token[entry["index"]], self._index_to_vocab)
