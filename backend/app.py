@@ -36,7 +36,7 @@ CORS(app)
 
 def generate_tags(country_name1, country_name2):
     data = sql_search('atlasfull')
-    partone = PartOne(data, 20)
+    partone = PartOne(data, 5000)
     return partone.generate_tags(country_name1, country_name2)
 
 
