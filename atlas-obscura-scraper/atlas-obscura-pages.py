@@ -26,17 +26,15 @@ driver = webdriver.Chrome(service=Service(
 
 # given a link to a country's page, returns a list of attraction links
 def links_from_country(driver, link):
-    driver.get('https://www.atlasobscura.com' + link+'/places')
+    driver.get(link)
     content = driver.page_source
     soup = BeautifulSoup(content, features="html.parser")
-
     results = []
     for card in soup.find_all("div", {"class": "CardWrapper"}):
         if card.find('a', href=True):
             a = card.find('a', href=True)
             results.append(a['href'])
 
-    print(results)
     return results
 
 
@@ -60,15 +58,13 @@ def get_description(driver, a_link):
         for p in body2.find_all("p"):
             description = description + " " + p.text.strip().replace('\xa0', ' ')
 
-    # print(description)
     return description.strip()
 
 
 # given a link to a country's page, returns a list with each attraction's information
 # as [attraction_name, attraction_location, attraction_blurb]
-def info_from_country(driver, country_link):
-    full_link = 'https://www.atlasobscura.com' + country_link+'/places'
-    driver.get(full_link)
+def info_from_country(driver, link):
+    driver.get(link)
     content = driver.page_source
     soup = BeautifulSoup(content, features="html.parser")
 
@@ -76,23 +72,45 @@ def info_from_country(driver, country_link):
     for card in soup.find_all("div", {"class": "Card__content-wrap"}):
         # retrieve attraction_location
         location = card.find("div", {"class": 'Card__hat'}).text.strip()
-        attraction = card.find('h3').text.strip()  # retrieve attraction_name
+        # retrieve attraction_name
+        attraction = card.find('h3').text.strip()
         blurb = card.find(
             "div", {"class": "Card__content"}).text.strip()  # retrieve attraction_blurb
 
         info = [attraction, location, blurb]
         print(info)
         results.append(info)
-
-    # print(results)
     return results
 
 
 # given a link to a country's page, gets all of the attraction entries for that country
 # as [attraction_name, attraction_location, attraction_blurb, attraction_url, attraction_desc]
 def get_country_data(driver, country_link):
-    attraction_links = links_from_country(driver, country_link)
-    entries = info_from_country(driver, country_link)
+    full_link = 'https://www.atlasobscura.com' + \
+        country_link+'/places'
+    driver.get(full_link)
+    content = driver.page_source
+    soup = BeautifulSoup(content, features="html.parser")
+    pagination = soup.find("div", {"class": "index-paginator"})
+    maxPageCt = len(pagination.find_all("a"))
+
+    if maxPageCt == 0:
+        attraction_links = links_from_country(driver, full_link)
+        entries = info_from_country(driver, full_link)
+    else:
+        if maxPageCt > 6:
+            maxPageCt = 6
+
+        attraction_links = []
+        entries = []
+        for index in range(1, maxPageCt):
+            page_link = 'https://www.atlasobscura.com' + \
+                country_link+'/places?page='+str(index)
+            driver.get(page_link)
+            content = driver.page_source
+            soup = BeautifulSoup(content, features="html.parser")
+            attraction_links += links_from_country(driver, page_link)
+            entries += info_from_country(driver, page_link)
 
     index = 0
     for a_link in attraction_links:
