@@ -4,22 +4,23 @@ from numpy import linalg as LA
 
 class PartOne:
 
-  def __init__(self, raw_data):
+  def __init__(self, raw_data, max_features):
     self._raw_data = raw_data
     self._array_with_country = self.preprocess_data(raw_data)
-    _tfidf_vec = self.build_vectorizer("english")
+    _tfidf_vec = self.build_vectorizer(max_features, "english")
     self._attraction_by_token = self.generate_tf_idf(_tfidf_vec, self._array_with_country)
     self._index_to_vocab = self.generate_index_to_vocab(_tfidf_vec, self._attraction_by_token)
   
-  def preprocess_data(data):
+  def preprocess_data(self, data):
     for d in data:
       loc = d['location']
       country = loc.split(', ')[-1]
       d['country'] = country
     return data
   
-  def build_vectorizer(stop_words, max_df=0.8, min_df=10, norm='l2'):
-     return TfidfVectorizer(stop_words = stop_words, 
+  def build_vectorizer(max_features, stop_words, max_df=0.8, min_df=10, norm='l2'):
+     return TfidfVectorizer(max_features = max_features, 
+                           stop_words = stop_words, 
                            max_df = max_df, 
                            min_df = min_df,
                            norm = norm)
@@ -33,7 +34,7 @@ class PartOne:
 
 
   def generate_ranked_list(attarc_by_token, index_to_vocab):
-    ranked_ind = np.argsort(attarc_by_token)[::-1][:21]
+    ranked_ind = np.argsort(attarc_by_token)[::-1]
     return [index_to_vocab[ind] for ind in ranked_ind]
 
   def generate_tags(self ,country_name1, country_name2):

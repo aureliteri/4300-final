@@ -36,7 +36,7 @@ CORS(app)
 
 def generate_tags(country_name1, country_name2):
     data = sql_search('atlasfull')
-    partone = PartOne(data)
+    partone = PartOne(data, 20)
     return partone.generate_tags(country_name1, country_name2)
 
 
@@ -48,7 +48,7 @@ def sql_search(table_name):
 
 @app.route("/")
 def home():
-    return generate_tags("Hello", "worlds")
+    return generate_tags("Algeria", "Chad")
 
 # @app.route("/episodes")
 # def episodes_search():
