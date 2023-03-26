@@ -38,21 +38,16 @@ class PartOne:
     ranked_ind = np.argsort(attarc_by_token)[::-1][:21]
     return [index_to_vocab[ind] for ind in ranked_ind]
 
-  def generate_tags(self, country_name1, country_name2):
+  def generate_tags(self, country_names):
     country_dict = {}
     for entry in self._array_with_country:
-      if entry["country"] == country_name1:
-        country_dict[country_name1] = {}
-        country_dict[country_name1]["index"] = entry["index"]
-        country_dict[country_name1]["td_idf_array"] = np.sort(self._attraction_by_token[entry["index"]])[::-1][:21]
+      if entry["country"] in country_names:
+        country_name = entry["country"]
+        country_dict[country_name] = {}
+        country_dict[country_name]["index"] = entry["index"]
+        country_dict[country_name]["td_idf_array"] = np.sort(self._attraction_by_token[entry["index"]])[::-1][:21]
         ranked_list = self.generate_ranked_list(self._attraction_by_token[entry["index"]], self._index_to_vocab)
-        country_dict[country_name1]["ranked_words"] = ranked_list
-      elif entry["country"] == country_name2:
-        country_dict[country_name2] = {}
-        country_dict[country_name2]["index"] = entry["index"]
-        country_dict[country_name2]["td_idf_array"] = np.sort(self._attraction_by_token[entry["index"]])[::-1][:21]
-        ranked_list = self.generate_ranked_list(self._attraction_by_token[entry["index"]], self._index_to_vocab)
-        country_dict[country_name2]["ranked_words"] = ranked_list
+        country_dict[country_name]["ranked_words"] = ranked_list
     return country_dict
 
 

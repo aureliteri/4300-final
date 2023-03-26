@@ -54,7 +54,7 @@ def sql_search(table_name):
 def home():
     data = sql_search('atlasfull')
     partOne = PartOne(data, 5000)
-    tag_dict = partOne.generate_tags("Algeria", "Chad")
+    tag_dict = partOne.generate_tags(["Algeria"])
     print("tag_dict")
     print(tag_dict)
 
