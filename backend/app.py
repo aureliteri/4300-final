@@ -35,9 +35,16 @@ CORS(app)
 #     data = mysql_engine.query_selector(query_sql)
 #     return json.dumps([dict(zip(keys,i)) for i in data])
 
+def sql_search(table_name):
+    query_sql = f"""SELECT * FROM {table_name}"""
+    keys = ["index","attraction","location","blurb","url","description"]
+    data = mysql_engine.query_selector(query_sql)
+    return [dict(zip(keys,i)) for i in data]
+
+data = sql_search('atlasfull')
+partOne = PartOne(data, 5000)
+
 def generate_tags(countries):
-    data = sql_search('atlasfull')
-    partOne = PartOne(data, 5000)
     tag_dict = partOne.generate_tags([countries])
     print(tag_dict, type(tag_dict))
     
@@ -48,12 +55,6 @@ def generate_tags(countries):
 #     parttwo = PartTwo(PartOne._array_with_country, tags)
 #     return parttwo
 
-
-def sql_search(table_name):
-    query_sql = f"""SELECT * FROM {table_name}"""
-    keys = ["index","attraction","location","blurb","url","description"]
-    data = mysql_engine.query_selector(query_sql)
-    return [dict(zip(keys,i)) for i in data]
 
 @app.route("/")
 def home():
@@ -76,11 +77,20 @@ def home():
 
 @app.route("/countries")
 def get_countries():
-    print("form submitted")
     countries = request.args.get("countries")
     tags_dict= generate_tags(countries)
     tags = tags_dict[countries]["ranked_words"]
     print(tags)
     return tags
+
+
+@app.route("/country-list")
+def country_list():
+    print("form submitted")
+    country_set = set()
+    for entry in partOne._array_with_country:
+      country_set.add(entry["country"])
+    print(country_set)
+    return list(country_set)
 
 app.run(debug=True)
