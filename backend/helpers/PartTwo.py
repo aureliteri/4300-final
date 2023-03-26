@@ -29,7 +29,7 @@ class PartTwo:
     # print("SIMILAR WORDS")
     return [features[ind] for ind in sorted_words_ind][:topk+1]
   
-  def helper(self,sim_mat, weighted_tags):
+  def get_top_attractions(self,sim_mat, weighted_tags):
     scores = []
     for destination in self._array_with_country:
       #if destination["attraction"] == 'Jeju Glass Castle Theme Park':

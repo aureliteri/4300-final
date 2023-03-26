@@ -65,7 +65,7 @@ def home():
     print(partTwo.find_most_similar_words(partTwo.pmi, "castle"))
     weighted_tags = ["castle", "castles", "hungary", "romania", "von"]
     #print(tag_dict['ranked_words'])
-    print(partTwo.helper(partTwo.pmi, weighted_tags))
+    print(partTwo.get_top_attractions(partTwo.pmi, weighted_tags))
     # print(output)
     return render_template('base.html',title="sample html")
 
