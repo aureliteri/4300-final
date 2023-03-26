@@ -14,9 +14,9 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..",os.curdir))
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
-MYSQL_USER_PASSWORD = "Gogo2001!"
+MYSQL_USER_PASSWORD = ""
 MYSQL_PORT = 3306
-MYSQL_DATABASE = "destinationDB"
+MYSQL_DATABASE = "atlas_obscura_testing_data"
 
 mysql_engine = MySQLDatabaseHandler(MYSQL_USER,MYSQL_USER_PASSWORD,MYSQL_PORT,MYSQL_DATABASE)
 
@@ -55,16 +55,17 @@ def home():
     data = sql_search('atlasfull')
     partOne = PartOne(data, 5000)
     tag_dict = partOne.generate_tags("Algeria", "Chad")
+    print("tag_dict")
+    print(tag_dict)
+
     partTwo = PartTwo(partOne._tfidf_vec,
                       partOne._array_with_country, 
                       partOne._attraction_by_token, 
                       partOne._index_to_vocab)
     print(partTwo.find_most_similar_words(partTwo.pmi, "castle"))
-
-    
-
-
-    print(tag_dict)
+    weighted_tags = ["castle", "castles", "hungary", "romania", "von"]
+    #print(tag_dict['ranked_words'])
+    print(partTwo.helper(partTwo.pmi, weighted_tags))
     # print(output)
     return render_template('base.html',title="sample html")
 
