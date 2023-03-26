@@ -100,4 +100,4 @@ def home():
     # print(partTwo.get_top_attractions(partTwo.pmi, weighted_tags))
     return render_template('base.html',title="home")
 
-app.run(debug=True)
+# app.run(debug=True)
