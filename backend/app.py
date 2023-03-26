@@ -43,6 +43,10 @@ def sql_search(table_name):
 
 data = sql_search('atlasfull')
 partOne = PartOne(data, 5000)
+partTwo = PartTwo(partOne._tfidf_vec,
+                    partOne._array_with_country, 
+                    partOne._attraction_by_token, 
+                    partOne._index_to_vocab)
 
 def generate_tags(countries):
     tag_dict = partOne.generate_tags([countries])
@@ -51,10 +55,32 @@ def generate_tags(countries):
     return tag_dict
 
 
-# def generate_output(tags):
-#     parttwo = PartTwo(PartOne._array_with_country, tags)
-#     return parttwo
+@app.route("/country-list")
+def country_list():
+    print("form submitted")
+    country_set = set()
+    for entry in partOne._array_with_country:
+      country_set.add(entry["country"])
+    print(country_set)
+    return list(country_set)
 
+@app.route("/countries")
+def get_countries():
+    countries = request.args.get("countries")
+    tags_dict= generate_tags(countries)
+    tags = tags_dict[countries]["ranked_words"]
+    print(tags)
+    return tags
+
+@app.route("/output")
+def generate_output():
+    tags = request.args.get("tags")
+    tags= tags.strip().split(",")
+    output_tuple = partTwo.get_top_attractions(partTwo.pmi, tags)
+    output = [location for score, location in output_tuple]
+    print(output)
+
+    return output
 
 @app.route("/")
 def home():
@@ -70,27 +96,8 @@ def home():
     #                   partOne._index_to_vocab)
     # print(partTwo.find_most_similar_words(partTwo.pmi, "castle"))
     # weighted_tags = ["castle", "castles", "hungary", "romania", "von"]
-    #print(tag_dict['ranked_words'])
+    # # print(tag_dict['ranked_words'])
     # print(partTwo.get_top_attractions(partTwo.pmi, weighted_tags))
-    # print(output)
     return render_template('base.html',title="home")
-
-@app.route("/countries")
-def get_countries():
-    countries = request.args.get("countries")
-    tags_dict= generate_tags(countries)
-    tags = tags_dict[countries]["ranked_words"]
-    print(tags)
-    return tags
-
-
-@app.route("/country-list")
-def country_list():
-    print("form submitted")
-    country_set = set()
-    for entry in partOne._array_with_country:
-      country_set.add(entry["country"])
-    print(country_set)
-    return list(country_set)
 
 app.run(debug=True)

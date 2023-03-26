@@ -28,9 +28,14 @@
                 <button class="user-field" id="submit-tags" type="submit">Submit</button>
             </form>
         </div>
+        <div id="output-box">    
+            <div class="output-list" id="output-box"></div>
+        </div>
     </main>
     <script>
         document.getElementById("tag-box").style.visibility = 'hidden';
+        document.getElementById("output-box").style.visibility = 'hidden';
+
         var tags = []
         var tag_len = 0
         fetch("/country-list" )
@@ -63,6 +68,12 @@
             </div>`
         }
 
+        function outputBoxTemplate(loc) {
+            return `<div class=''>
+                <p class='output-loc'>${loc}</p>
+            </div>`
+        }
+
         var countryInput = document.getElementById("country-input");
         document.querySelector('form.form-1').addEventListener('submit', function (e) {
             e.preventDefault();
@@ -91,6 +102,18 @@
                 }
             }
             console.log(values)
+
+            fetch("/output?" + new URLSearchParams({ tags: values }).toString())
+                .then((response) => response.json())
+                .then((d) => {
+                    d.forEach(location => {
+                        let tempDiv = document.createElement("div")
+                        tempDiv.innerHTML = outputBoxTemplate(location)
+                        document.getElementById("output-box").appendChild(tempDiv)
+                    })}
+                );
+            document.getElementById("output-box").style.visibility = 'visible';
+
         });
     
     </script>
