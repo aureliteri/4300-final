@@ -14,9 +14,9 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..",os.curdir))
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
-MYSQL_USER_PASSWORD = "america!"
+MYSQL_USER_PASSWORD = "Gogo2001!"
 MYSQL_PORT = 3306
-MYSQL_DATABASE = "atlasDB"
+MYSQL_DATABASE = "destinationDB"
 
 mysql_engine = MySQLDatabaseHandler(MYSQL_USER,MYSQL_USER_PASSWORD,MYSQL_PORT,MYSQL_DATABASE)
 
@@ -35,15 +35,13 @@ CORS(app)
 #     data = mysql_engine.query_selector(query_sql)
 #     return json.dumps([dict(zip(keys,i)) for i in data])
 
-def generate_tags(country_name1, country_name2):
-    data = sql_search('atlasfull')
-    partone = PartOne(data, 5000)
+def generate_tags(partone, country_name1, country_name2):
     return partone.generate_tags(country_name1, country_name2)
 
 
-def generate_output(tags):
-    parttwo = PartTwo(PartOne._array_with_country, tags)
-    return parttwo
+# def generate_output(tags):
+#     parttwo = PartTwo(PartOne._array_with_country, tags)
+#     return parttwo
 
 
 def sql_search(table_name):
@@ -54,11 +52,20 @@ def sql_search(table_name):
 
 @app.route("/")
 def home():
-    tag_dict = generate_tags("Algeria", "Chad")
-    output = generate_output(tag_dict)
+    data = sql_search('atlasfull')
+    partOne = PartOne(data, 5000)
+    tag_dict = partOne.generate_tags("Algeria", "Chad")
+    partTwo = PartTwo(partOne._tfidf_vec,
+                      partOne._array_with_country, 
+                      partOne._attraction_by_token, 
+                      partOne._index_to_vocab)
+
+    
+
+
     print(tag_dict)
-    print(output)
-    return None
+    # print(output)
+    return render_template('base.html',title="sample html")
 
 # @app.route("/episodes")
 # def episodes_search():

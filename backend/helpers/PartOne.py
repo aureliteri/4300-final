@@ -7,7 +7,7 @@ class PartOne:
   def __init__(self, raw_data, max_features):
     self._raw_data = raw_data
     self._array_with_country = self.preprocess_data(raw_data)
-    _tfidf_vec = self.build_vectorizer(max_features, "english")
+    self._tfidf_vec = self.build_vectorizer(max_features, "english")
     self._attraction_by_token = self.generate_tf_idf(_tfidf_vec, self._array_with_country)
     self._index_to_vocab = self.generate_index_to_vocab(_tfidf_vec)
   
