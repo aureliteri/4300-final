@@ -16,7 +16,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..",os.curdir))
 MYSQL_USER = "root"
 MYSQL_USER_PASSWORD = ""
 MYSQL_PORT = 4534
-MYSQL_DATABASE = "atlastable"
+MYSQL_DATABASE = "atlasDB"
 
 mysql_engine = MySQLDatabaseHandler(MYSQL_USER,MYSQL_USER_PASSWORD,MYSQL_PORT,MYSQL_DATABASE)
 
@@ -41,7 +41,7 @@ def sql_search(table_name):
     data = mysql_engine.query_selector(query_sql)
     return [dict(zip(keys,i)) for i in data]
 
-data = sql_search('atlasfull')
+data = sql_search('atlastable')
 partOne = PartOne(data, 5000)
 partTwo = PartTwo(partOne._tfidf_vec,
                     partOne._array_with_country, 
