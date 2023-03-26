@@ -36,6 +36,6 @@ services:
         networks:
                 - flask_network
 volumes:
-        flask_volume:
+  flask_volume:
 networks:
-        flask_network:
+  flask_network:
