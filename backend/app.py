@@ -59,6 +59,7 @@ def home():
                       partOne._array_with_country, 
                       partOne._attraction_by_token, 
                       partOne._index_to_vocab)
+    print(partTwo.find_most_similar_words(partTwo.pmi, "castle"))
 
     
 

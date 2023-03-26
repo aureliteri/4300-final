@@ -8,8 +8,8 @@ class PartOne:
     self._raw_data = raw_data
     self._array_with_country = self.preprocess_data(raw_data)
     self._tfidf_vec = self.build_vectorizer(max_features, "english")
-    self._attraction_by_token = self.generate_tf_idf(_tfidf_vec, self._array_with_country)
-    self._index_to_vocab = self.generate_index_to_vocab(_tfidf_vec)
+    self._attraction_by_token = self.generate_tf_idf(self._tfidf_vec)
+    self._index_to_vocab = self.generate_index_to_vocab(self._tfidf_vec)
   
   def preprocess_data(self, data):
     for d in data:
@@ -26,8 +26,8 @@ class PartOne:
                            norm = norm,
                            token_pattern=u'(?ui)\\b\\w*[a-z]+\\w*\\b')
   
-  def generate_tf_idf(self, tfidf_vec, array_with_country):
-    return tfidf_vec.fit_transform([d["description"].lower() for d in array_with_country]).toarray()
+  def generate_tf_idf(self, tfidf_vec):
+    return tfidf_vec.fit_transform([d["description"].lower() for d in self._array_with_country]).toarray()
 
 
   def generate_index_to_vocab(self, tfidf_vec):
