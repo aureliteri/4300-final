@@ -14,7 +14,7 @@ class PartTwo:
     return np.dot(self._attraction_by_token.T, self._attraction_by_token)
 
 
-  def find_most_similar_words(self, word, topk=30):
+  def find_most_similar_words(self, word):
     features = self._tfidf_vec.get_feature_names()
     sim_mat = self.cooccurance_mat
     if word not in features:
