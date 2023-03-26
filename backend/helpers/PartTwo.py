@@ -23,24 +23,23 @@ class PartTwo:
         print(word, 'is OOV.')
         return None 
     idx = features.index(word)
-    # print("IDX")
-    # print(idx)
     sorted_words_ind = np.argsort(sim_mat[idx])[::-1]
-    # print("SIMILAR WORDS")
-    return [features[ind] for ind in sorted_words_ind][:topk+1]
+    output = [tuple((features[ind],sim_mat[idx][ind])) for ind in sorted_words_ind][:topk+1]
+    return output
   
   def get_top_attractions(self,sim_mat, weighted_tags):
     scores = []
     for destination in self._array_with_country:
-      #if destination["attraction"] == 'Jeju Glass Castle Theme Park':
       description = destination["description"].lower()
       split_description = set(description.split())
       score = 0
       for tag in weighted_tags:
-        most_similar_words = set(self.find_most_similar_words(sim_mat, tag))
+        most_similar_words = set([x[0] for x in self.find_most_similar_words(sim_mat, tag)])
+        #intersection1 = list(split_description.intersection(most_similar_words))
+        #intersected_tags = [(key, most_similar_words[key]) for key in intersection1]
+        print("intersection")
+        #print(intersected_tags)
         score += len(list(split_description.intersection(most_similar_words)))
-        #print(score)
-        #print(list(split_description.intersection(most_similar_words)))
       scores.append(tuple((score, destination["attraction"])))
     output = sorted(scores,key=lambda x: x[0], reverse=True)[:10]
     print("Destinations to visit:")
