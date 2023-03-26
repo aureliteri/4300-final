@@ -11,33 +11,34 @@
     <main>
         <h1>Off the Beaten Path</h1>
 
-        <div class="scroll-box" id="scroll-box-1">
-            <form class="user-1 user">
+        <div class="scroll-box" id="scroll-box">
+            <form class="form-1 user">
                 <label id="country-label" class="user-field" for="country">Where do you want to go?</label>
                 <input list="datalist" id="country-input" type="text" onkeyup="ac(this.value)" />
                 <datalist class="user-field" id="datalist"></datalist>
-                <button class="user-field" id="submit-country" type="submit">Submit</button>
+                <button class="user-field" id="submit-country" type="submit" value="Submit">Submit </button>
             </form>
         </div>
 
-        <div class="scroll-box" id="scroll-box-2">
-            <form class="user-2 user">
+        <div class="tag-box" id="tag-box">
+            <form class=" form-2 tag-round">
                 <label id="tags-label" class="user-field" for="tags">Tags to include:</label>
-                <input id="tags-input" type="text" />
+                <!-- <input id="tags-input" type="text" /> -->
+                <div id = tags-input></div>
                 <button class="user-field" id="submit-tags" type="submit">Submit</button>
             </form>
         </div>
     </main>
     <script>
-
-        document.getElementById("scroll-box-2").style.visibility = 'hidden';
+        document.getElementById("tag-box").style.visibility = 'hidden';
 
         var tags = [
             "South Korea",
             "Canada",
             "France",
             "Ghana",
-            "New Zealand"
+            "New Zealand",
+            "Algeria"
         ];
 
         var n = tags.length;
@@ -58,22 +59,52 @@
             }
         }
 
+        function tagBoxTemplate(tag) {
+            return `<div class=''>
+                <input id="tags-input-${tag}"type="checkbox" />
+                <label for="tags-input-${tag}"> ${tag}</label><br>
+            </div>`
+        }
+
+        // function submitCountry() {
+        //     document.getElementById("tag-box").innerHTML = ""
+        //     console.log(document.getElementById("country-input").value)
+        //     fetch("/countries?" + new URLSearchParams({ countries: document.getElementById("country-input").value }).toString())
+        //         // .then((response) => response.json())
+        //         .then((data) => data.forEach(row => {
+        //             let tempDiv = document.createElement("div")
+        //             tempDiv.innerHTML = tagBoxTemplate(row.ranked_words, row.descr)
+        //             document.getElementById("tag-box").appendChild(tempDiv)
+        //         }));
+
+        // }
         var countryInput = document.getElementById("country-input");
-        document.querySelector('form.user-1').addEventListener('submit', function (e) {
+        document.querySelector('form.form-1').addEventListener('submit', function (e) {
             e.preventDefault();
             console.log(countryInput.value);
 
-            document.getElementById("scroll-box-2").style.visibility = 'visible';
+            document.getElementById("tag-box").style.visibility = 'visible';
 
-            // document.getElementById("submit-country").style.visibility = 'hidden';
-            // document.getElementById("country-input").style.visibility = 'hidden';
-            // document.getElementById("country-label").style.visibility = 'hidden';
+            fetch("/countries?" + new URLSearchParams({ countries: document.getElementById("country-input").value }).toString())
+                .then((response) => response.json())
+                .then((d) => {
+                    d.forEach(tag => {
+                        let tempDiv = document.createElement("div")
+                        tempDiv.innerHTML = tagBoxTemplate(tag)
+                        document.getElementById("tags-input").appendChild(tempDiv)
+                    })
+                }
+
+                );
         });
 
         var tagsInput = document.getElementById("tags-input");
-        document.querySelector('form.user-2').addEventListener('submit', function (e) {
+        document.querySelector('form.form-2').addEventListener('submit', function (e) {
             e.preventDefault();
             console.log(tagsInput.value);
+
+
+
         });
     </script>
 </body>

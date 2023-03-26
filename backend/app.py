@@ -14,9 +14,9 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..",os.curdir))
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
-MYSQL_USER_PASSWORD = ""
+MYSQL_USER_PASSWORD = "america!"
 MYSQL_PORT = 3306
-MYSQL_DATABASE = "atlas_obscura_testing_data"
+MYSQL_DATABASE = "atlasDB"
 
 mysql_engine = MySQLDatabaseHandler(MYSQL_USER,MYSQL_USER_PASSWORD,MYSQL_PORT,MYSQL_DATABASE)
 
@@ -35,8 +35,13 @@ CORS(app)
 #     data = mysql_engine.query_selector(query_sql)
 #     return json.dumps([dict(zip(keys,i)) for i in data])
 
-def generate_tags(partone, country_name1, country_name2):
-    return partone.generate_tags(country_name1, country_name2)
+def generate_tags(countries):
+    data = sql_search('atlasfull')
+    partOne = PartOne(data, 5000)
+    tag_dict = partOne.generate_tags([countries])
+    print(tag_dict, type(tag_dict))
+    
+    return tag_dict
 
 
 # def generate_output(tags):
@@ -52,26 +57,30 @@ def sql_search(table_name):
 
 @app.route("/")
 def home():
-    data = sql_search('atlasfull')
-    partOne = PartOne(data, 5000)
-    tag_dict = partOne.generate_tags(["Algeria"])
-    print("tag_dict")
-    print(tag_dict)
+    # data = sql_search('atlasfull')
+    # partOne = PartOne(data, 5000)
+    # tag_dict = partOne.generate_tags(["Algeria"])
+    # print("tag_dict")
+    # print(tag_dict)
 
-    partTwo = PartTwo(partOne._tfidf_vec,
-                      partOne._array_with_country, 
-                      partOne._attraction_by_token, 
-                      partOne._index_to_vocab)
-    print(partTwo.find_most_similar_words(partTwo.pmi, "castle"))
-    weighted_tags = ["castle", "castles", "hungary", "romania", "von"]
+    # partTwo = PartTwo(partOne._tfidf_vec,
+    #                   partOne._array_with_country, 
+    #                   partOne._attraction_by_token, 
+    #                   partOne._index_to_vocab)
+    # print(partTwo.find_most_similar_words(partTwo.pmi, "castle"))
+    # weighted_tags = ["castle", "castles", "hungary", "romania", "von"]
     #print(tag_dict['ranked_words'])
-    print(partTwo.get_top_attractions(partTwo.pmi, weighted_tags))
+    # print(partTwo.get_top_attractions(partTwo.pmi, weighted_tags))
     # print(output)
-    return render_template('base.html',title="sample html")
+    return render_template('base.html',title="home")
 
-# @app.route("/episodes")
-# def episodes_search():
-#     text = request.args.get("title")
-#     return get_data(text)
+@app.route("/countries")
+def get_countries():
+    print("form submitted")
+    countries = request.args.get("countries")
+    tags_dict= generate_tags(countries)
+    tags = tags_dict[countries]["ranked_words"]
+    print(tags)
+    return tags
 
 app.run(debug=True)
