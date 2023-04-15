@@ -46,6 +46,7 @@ def get_description(driver, a_link):
 
     description = ""
     tags = ""
+
     # retrieve main body
     body1 = soup.find("div", {"id": "place-body"})
     if body1:
@@ -56,6 +57,12 @@ def get_description(driver, a_link):
     body2 = soup.find("div", {"class": "DDP__direction-copy"})
     if body2:
         for p in body2.find_all("p"):
+            description = description + " " + p.text.strip().replace('\xa0', ' ')
+ 
+    # retrieve "tags" section
+    body3 = soup.find("div", {"class": "item-tags"})
+    if body3:
+        for p in body3.find_all("a"):
             tags = tags + " " + p.text.strip().replace('\xa0', ' ')
 
     return description.strip(), tags.strip()
