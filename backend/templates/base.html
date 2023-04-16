@@ -4,6 +4,13 @@
 <head>
     <title>Off the Beaten Path</title>
 
+    <script src="https://kit.fontawesome.com/6969334fef.js" crossorigin="anonymous"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oleo+Script&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" type="text/css" href="../static/style.css">
 </head>
 
@@ -11,39 +18,89 @@
     <main>
         <h1>Off the Beaten Path</h1>
 
-        <div class="scroll-box" id="scroll-box">
-            <form class="form-1 user">
-                <label id="country-label" class="user-field" for="country">Where do you want to go?</label>
-                <input list="datalist" id="country-input" type="text" onkeyup="ac(this.value)" />
-                <datalist class="user-field" id="datalist"></datalist>
-                <button class="user-field" id="submit-country" type="submit" value="Submit">Submit </button>
-            </form>
+        <div class="part-1">
+            <h2> Where do you want to go?</h2>
+
+            <div id="countryChosen">
+                <div class="country-box">
+                    <h3 class="country-box-text" id="chosenCountry">Country Name</h3>
+                </div>
+                <button id="editCountry" class="country-icon">
+                    <h3 id="countryPen"><i class="fa-solid fa-pen fa-2x"></i></h3>
+                </button>
+            </div>
+
+
+            <div id="countryEditing" class="hidden">
+                <form class="choose-form">
+                    <div class="country-box">
+                        <input list="datalist" id="country-input" type="text" onkeyup="ac(this.value)" />
+                        <datalist id="datalist"></datalist>
+                    </div>
+
+                    <button id="chooseCountry" class="country-icon" type="submit">
+                        <h3 id="countryCheck"><i class="fa-solid fa-check fa-3x"></i></h3>
+                    </button>
+                </form>
+            </div>
+
+            <button id="submitCountries">
+                <!-- cant get fa badge check to work -->
+                <h3><i class="fa-solid fa-check fa-3x"></i></h3>
+            </button>
         </div>
 
         <div class="tag-box" id="tag-box">
             <form class=" form-2 tag-round">
                 <label id="tags-label" class="user-field" for="tags">Tags to include:</label>
                 <!-- <input id="tags-input" type="text" /> -->
-                <div id = tags-checker></div>
+                <div id=tags-checker></div>
                 <button class="user-field" id="submit-tags" type="submit">Submit</button>
             </form>
         </div>
-        <div id="output-box">    
+        <div id="output-box">
             <div class="output-list" id="output-box"></div>
         </div>
     </main>
     <script>
+
+        var editCountry = document.getElementById("editCountry");
+        editCountry.onclick = function () {
+            var countryEditView = document.getElementById("countryEditing");
+            countryEditView.classList.remove("hidden");
+
+            var countryChosenView = document.getElementById("countryChosen");
+            countryChosenView.classList.add("hidden");
+        }
+
+        var countryInput = document.getElementById("country-input");
+        document.querySelector('form.choose-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            console.log(countryInput.value);
+
+            var countryEditView = document.getElementById("countryEditing");
+            countryEditView.classList.add("hidden");
+
+            var countryChosenView = document.getElementById("countryChosen");
+            countryChosenView.classList.remove("hidden");
+
+            var newCountry = document.getElementById("chosenCountry");
+            newCountry.innerHTML = countryInput.value;
+
+        });
+
+
         document.getElementById("tag-box").style.visibility = 'hidden';
         document.getElementById("output-box").style.visibility = 'hidden';
 
         var tags = []
         var tag_len = 0
-        fetch("/country-list" )
-                .then((response) => response.json())
-                .then((d) => {
-                    tags = d
-                    tag_len = tags.length;
-                })
+        fetch("/country-list")
+            .then((response) => response.json())
+            .then((d) => {
+                tags = d
+                tag_len = tags.length;
+            })
 
 
         function ac(value) {
@@ -61,7 +118,7 @@
                 }
             }
         }
-       
+
         function tagBoxTemplate(tag) {
             return `<div class=''>
                 <label for="tags-input-${tag}">  <input class = "tags-input" value =${tag} id="tags-input-${tag}" type="checkbox" /> ${tag}</label><br>
@@ -74,30 +131,30 @@
             </div>`
         }
 
-        var countryInput = document.getElementById("country-input");
-        document.querySelector('form.form-1').addEventListener('submit', function (e) {
-            e.preventDefault();
+        var countriesSubmit = document.getElementById("submitCountries");
+        countriesSubmit.onclick = function () {
             console.log(countryInput.value);
 
             document.getElementById("tag-box").style.visibility = 'visible';
 
-            fetch("/countries?" + new URLSearchParams({ countries: document.getElementById("country-input").value }).toString())
+            fetch("/countries?" + new URLSearchParams({ countries: countryInput.value }).toString())
                 .then((response) => response.json())
                 .then((d) => {
                     d.forEach(tag => {
                         let tempDiv = document.createElement("div")
                         tempDiv.innerHTML = tagBoxTemplate(tag)
                         document.getElementById("tags-checker").appendChild(tempDiv)
-                    })}
+                    })
+                }
                 );
-        });
+        };
 
         var tagsInput = document.getElementsByClassName("tags-input");
         document.querySelector('form.form-2').addEventListener('submit', function (e) {
             e.preventDefault();
             var values = []
             for (const input of tagsInput) {
-                if (input.checked){
+                if (input.checked) {
                     values.push(input.value)
                 }
             }
@@ -110,12 +167,13 @@
                         let tempDiv = document.createElement("div")
                         tempDiv.innerHTML = outputBoxTemplate(location)
                         document.getElementById("output-box").appendChild(tempDiv)
-                    })}
+                    })
+                }
                 );
             document.getElementById("output-box").style.visibility = 'visible';
 
         });
-    
+
     </script>
 </body>
 

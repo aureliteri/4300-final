@@ -1,32 +1,8 @@
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    background-color: rgb(251, 251, 243);
 }
 
-main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.user {
-    background-color: lightgray;
-    border-radius: 10%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
-    height: 300px;
-    width: 250px;
-}
-
-.user-field {
-    margin: 10px;
-}
-
-.scroll-box  {
+.scroll-box {
     justify-self: center;
     display: flex;
     width: 500px;
@@ -39,7 +15,7 @@ main {
     margin: 10px;
 }
 
-.tag-box  {
+.tag-box {
     justify-self: center;
     display: flex;
     width: 500px;
@@ -50,6 +26,7 @@ main {
     border: 1px solid gray;
     margin: 10px;
 }
+
 .tag-round {
     background-color: lightgray;
     border-radius: 10%;
@@ -60,4 +37,126 @@ main {
     margin: 10px;
     height: 500px;
     width: 250px;
+}
+
+h1 {
+    width: 50px;
+    margin-top: 40px;
+    margin-left: 40px;
+
+    font-family: 'Oleo Script';
+    font-weight: 100;
+    font-size: 40px;
+    line-height: 40px;
+
+    display: flex;
+    align-items: center;
+
+    color: #E7B540;
+}
+
+h2 {
+    margin-top: 0;
+    font-family: 'Oleo Script';
+    font-weight: 400;
+    font-size: 65px;
+
+    display: flex;
+    justify-content: center;
+    text-align: center;
+
+    color: #E7B540;
+    text-shadow: -4px 4px 0px #48A369;
+}
+
+.countryChosen,
+.countryEditing {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.country-box {
+    width: 700px;
+    height: 100px;
+    margin-right: 20px;
+    float: left;
+
+    justify-content: center;
+
+    background: #E4AF71;
+    border-radius: 20px;
+    display: flex;
+
+}
+
+.country-box-text {
+    font-family: 'Roboto';
+    font-weight: 700;
+    font-size: 35px;
+    line-height: 40px;
+    justify-content: center;
+
+    display: flex;
+
+    text-align: center;
+    align-items: center;
+    text-transform: uppercase;
+
+    color: #FFFFFF;
+}
+
+.country-icon {
+    height: 100px;
+    width: 100px;
+
+    background: rgba(231, 181, 64, 0.6);
+    border-radius: 20px;
+    border: none;
+}
+
+.country-icon h3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+    color: #F3F3F3;
+}
+
+#country-input {
+    justify-content: center;
+    height: 65px;
+    width: 300px;
+    font-size: 30px;
+    margin-top: 15px;
+    text-align: center;
+    border-radius: 10px;
+    border: none;
+}
+
+.hidden {
+    display: none;
+}
+
+#submitCountries {
+    width: 250px;
+    height: 115px;
+    margin-top: 200px;
+
+    background-color: #48A369;
+    opacity: 0.8;
+    border: none;
+    border-radius: 20px;
+}
+
+#submitCountries h3 {
+    color: white;
+}
+
+.part-1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
