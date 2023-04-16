@@ -4,8 +4,8 @@ import numpy as np
 from numpy import linalg as LA
 from nltk.stem import PorterStemmer
 
-MAX_DF = 0.8
-MIN_DF = 0.1
+MAX_DF = 0.7
+MIN_DF = 0.01
 NUMBER_OF_TAGS = 20
 
 class PartOne:
@@ -51,13 +51,32 @@ class PartOne:
   def generate_index_to_vocab(self, tfidf_vec):
     return {i:v for i, v in enumerate(tfidf_vec.get_feature_names())}
 
+  def generate_tags_all_country(self, attarc_by_token):
+    print("attarc_by_token")
+    print(attarc_by_token)
+    return 0
 
   def generate_ranked_list(self, attarc_by_token, index_to_vocab):
     ranked_ind = np.argsort(attarc_by_token)[::-1][:(NUMBER_OF_TAGS +1)]
     return [index_to_vocab[ind] for ind in ranked_ind]
-
-
+  
   def generate_tags(self, country_names):
+    country_dict = {}
+    for country in country_names:
+      country_dict[country] = {}
+      country_dict[country]["summed_tfidf"] = np.zeros(self._attraction_by_token.shape[1])
+    for entry in self._array_with_country:
+      if entry["country"] in country_names:
+        country_name = entry["country"]
+        country_dict[country_name]["summed_tfidf"] = np.add(country_dict[country_name]["summed_tfidf"], self._attraction_by_token[entry["index"]])
+    tag_dict = {}
+    for country in country_names:
+      ranked_indices = (-country_dict[country]["summed_tfidf"]).argsort()[:NUMBER_OF_TAGS+1]
+      tag_dict[country] = [self._index_to_vocab[ind] for ind in ranked_indices]
+    return tag_dict
+
+#keeping it in case we want to go back to it
+  def generate_tags_two(self, country_names):
     country_dict = {}
     for entry in self._array_with_country:
       if entry["country"] in country_names:
