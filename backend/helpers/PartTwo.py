@@ -1,6 +1,5 @@
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
 import numpy as np
-from numpy import linalg as LA
 
 TOPK = 10
 
@@ -9,9 +8,21 @@ class PartTwo:
     self._tfidf_vec = tfidf_vec
     self._array_with_country = array_with_country
     self._attraction_by_token = attraction_by_token
+    self._count_vec = self.build_count_vectorization(5000, "english")
+    self._token_counts = self.generate_tf(self._count_vec)
     self._index_to_vocab = index_to_vocab
     self.pmi = self.generate_pmi_mat()
   
+
+  def build_count_vectorization(self, max_features, stop_words, max_df=0.8, min_df= 10):
+     return CountVectorizer(max_features = max_features, 
+                           stop_words = stop_words, 
+                           max_df = max_df, 
+                           min_df = min_df)
+  
+  def generate_tf(self, count_vec):
+    return count_vec.fit_transform([d["description"].lower() for d in self._array_with_country]).toarray()
+
   def generate_pmi_mat(self):
     df = np.sum(self._attraction_by_token.T,1)
     cooccurance_mat = np.dot(self._attraction_by_token.T, self._attraction_by_token)
