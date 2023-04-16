@@ -37,11 +37,12 @@ CORS(app)
 
 def sql_search(table_name):
     query_sql = f"""SELECT * FROM {table_name}"""
-    keys = ["index","attraction","location","blurb","url","description"]
+    #keys = ["index","attraction","location","blurb","url","description"]
+    keys = ["index", "description", "lemmatized_description", "url", "attraction", "location", "blurb"]
     data = mysql_engine.query_selector(query_sql)
     return [dict(zip(keys,i)) for i in data]
 
-data = sql_search('atlasfull')
+data = sql_search('atlasnew')
 partOne = PartOne(data, 5000)
 partTwo = PartTwo(partOne._tfidf_vec,
                     partOne._array_with_country, 

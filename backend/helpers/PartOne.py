@@ -30,7 +30,7 @@ class PartOne:
                            token_pattern=u'(?ui)\\b\\w*[a-z]+\\w*\\b')
   
   def generate_tf_idf(self, tfidf_vec):
-    return tfidf_vec.fit_transform([d["description"].lower() for d in self._array_with_country]).toarray()
+    return tfidf_vec.fit_transform([d["lemmatized_description"].lower() for d in self._array_with_country]).toarray()
   
 
   def generate_index_to_vocab(self, tfidf_vec):
