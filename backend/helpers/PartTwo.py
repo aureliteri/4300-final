@@ -4,12 +4,11 @@ import numpy as np
 TOPK = 10
 
 class PartTwo:
-  def __init__(self, tfidf_vec, array_with_country, attraction_by_token, index_to_vocab):
-    self._tfidf_vec = tfidf_vec
+  def __init__(self, array_with_country, index_to_vocab):
     self._array_with_country = array_with_country
-    self._attraction_by_token = attraction_by_token
     self._count_vec = self.build_count_vectorization(5000, "english")
     self._token_counts = self.generate_tf(self._count_vec)
+    self._inverted_index = self.generate_inverted_index(self._token_counts)
     self._index_to_vocab = index_to_vocab
     self.pmi = self.generate_pmi_mat()
   
@@ -21,17 +20,27 @@ class PartTwo:
                            min_df = min_df)
   
   def generate_tf(self, count_vec):
-    return count_vec.fit_transform([d["description"].lower() for d in self._array_with_country]).toarray()
+    return count_vec.fit_transform([d["lemmatized_description"].lower() for d in self._array_with_country]).toarray()
+  
+  def generate_inverted_index(self, token_counts):
+    inverted_index = {}
+    for token_index in range(token_counts.shape[1]):
+        token = self._count_vec.get_feature_names_out()[token_index]
+        token_tuples = [(doc_index, token_counts[doc_index, token_index]) for doc_index in range(token_counts.shape[0]) if token_counts[doc_index, token_index] > 0]
+        inverted_index[token] = token_tuples
+    
+    print(inverted_index)
+    return inverted_index
 
   def generate_pmi_mat(self):
-    df = np.sum(self._attraction_by_token.T,1)
-    cooccurance_mat = np.dot(self._attraction_by_token.T, self._attraction_by_token)
+    df = np.sum(self._token_counts.T,1)
+    cooccurance_mat = np.dot(self._token_counts.T, self._token_counts)
     pmi_part = cooccurance_mat/df
     return pmi_part/df.reshape(df.shape[0],1)
   
   
   def find_most_similar_words(self, sim_mat, word, topk = TOPK):
-    features = self._tfidf_vec.get_feature_names()
+    features = self._count_vec.get_feature_names_out()
     if word not in features:
         print(word, 'is OOV.')
         return None 
