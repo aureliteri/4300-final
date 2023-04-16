@@ -1,6 +1,9 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
-from numpy import linalg as LA
+
+MAX_DF = 0.7
+MIN_DF = 0.01
+NUMBER_OF_TAGS = 20
 
 class PartOne:
 
@@ -10,7 +13,7 @@ class PartOne:
     self._tfidf_vec = self.build_vectorizer(max_features, "english")
     self._attraction_by_token = self.generate_tf_idf(self._tfidf_vec)
     self._index_to_vocab = self.generate_index_to_vocab(self._tfidf_vec)
-  
+
   def preprocess_data(self, data):
     for d in data:
       loc = d['location']
@@ -18,7 +21,7 @@ class PartOne:
       d['country'] = country
     return data
   
-  def build_vectorizer(self, max_features, stop_words, max_df=0.8, min_df= 10, norm='l2'):
+  def build_vectorizer(self, max_features, stop_words, max_df = MAX_DF, min_df = MIN_DF, norm='l2'):
      return TfidfVectorizer(max_features = max_features, 
                            stop_words = stop_words, 
                            max_df = max_df, 
@@ -27,28 +30,46 @@ class PartOne:
                            token_pattern=u'(?ui)\\b\\w*[a-z]+\\w*\\b')
   
   def generate_tf_idf(self, tfidf_vec):
-    return tfidf_vec.fit_transform([d["description"].lower() for d in self._array_with_country]).toarray()
-
+    return tfidf_vec.fit_transform([d["lemmatized_description"].lower() for d in self._array_with_country]).toarray()
+  
 
   def generate_index_to_vocab(self, tfidf_vec):
     return {i:v for i, v in enumerate(tfidf_vec.get_feature_names())}
 
+  def generate_tags_all_country(self, attarc_by_token):
+    print("attarc_by_token")
+    print(attarc_by_token)
+    return 0
 
   def generate_ranked_list(self, attarc_by_token, index_to_vocab):
-    ranked_ind = np.argsort(attarc_by_token)[::-1][:21]
+    ranked_ind = np.argsort(attarc_by_token)[::-1][:(NUMBER_OF_TAGS +1)]
     return [index_to_vocab[ind] for ind in ranked_ind]
-
+  
   def generate_tags(self, country_names):
+    country_dict = {}
+    for country in country_names:
+      country_dict[country] = {}
+      country_dict[country]["summed_tfidf"] = np.zeros(self._attraction_by_token.shape[1])
+    for entry in self._array_with_country:
+      if entry["country"] in country_names:
+        country_name = entry["country"]
+        country_dict[country_name]["summed_tfidf"] = np.add(country_dict[country_name]["summed_tfidf"], self._attraction_by_token[entry["index"]])
+    tag_dict = {}
+    for country in country_names:
+      ranked_indices = (-country_dict[country]["summed_tfidf"]).argsort()[:NUMBER_OF_TAGS+1]
+      tag_dict[country] = [self._index_to_vocab[ind] for ind in ranked_indices]
+    return tag_dict
+
+#keeping it in case we want to go back to it
+  def generate_tags_two(self, country_names):
     country_dict = {}
     for entry in self._array_with_country:
       if entry["country"] in country_names:
         country_name = entry["country"]
         country_dict[country_name] = {}
         country_dict[country_name]["index"] = entry["index"]
-        country_dict[country_name]["td_idf_array"] = np.sort(self._attraction_by_token[entry["index"]])[::-1][:21]
+        country_dict[country_name]["td_idf_array"] = np.sort(self._attraction_by_token[entry["index"]])[::-1][:NUMBER_OF_TAGS+1]
         ranked_list = self.generate_ranked_list(self._attraction_by_token[entry["index"]], self._index_to_vocab)
         country_dict[country_name]["ranked_words"] = ranked_list
     return country_dict
-
-
-    
+ 

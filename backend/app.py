@@ -15,13 +15,13 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..",os.curdir))
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
 MYSQL_USER_PASSWORD = ""
-MYSQL_PORT = 4534
-MYSQL_DATABASE = "travellocomotion_db"
+MYSQL_PORT = 3306
+MYSQL_DATABASE = "atlas_obscura_testing_data"
 
 mysql_engine = MySQLDatabaseHandler(MYSQL_USER,MYSQL_USER_PASSWORD,MYSQL_PORT,MYSQL_DATABASE)
 
 # Path to init.sql file. This file can be replaced with your own file for testing on localhost, but do NOT move the init.sql file
-mysql_engine.load_file_into_db()
+#mysql_engine.load_file_into_db()
 
 app = Flask(__name__)
 CORS(app)
@@ -37,11 +37,12 @@ CORS(app)
 
 def sql_search(table_name):
     query_sql = f"""SELECT * FROM {table_name}"""
-    keys = ["index","attraction","location","blurb","url","description"]
+    #keys = ["index","attraction","location","blurb","url","description"]
+    keys = ["index", "description", "lemmatized_description", "url", "attraction", "location", "blurb"]
     data = mysql_engine.query_selector(query_sql)
     return [dict(zip(keys,i)) for i in data]
 
-data = sql_search('atlastable')
+data = sql_search('atlasnew')
 partOne = PartOne(data, 5000)
 partTwo = PartTwo(partOne._tfidf_vec,
                     partOne._array_with_country, 
@@ -68,7 +69,7 @@ def country_list():
 def get_countries():
     countries = request.args.get("countries")
     tags_dict= generate_tags(countries)
-    tags = tags_dict[countries]["ranked_words"]
+    tags = tags_dict[countries]
     print(tags)
     return tags
 
@@ -100,4 +101,4 @@ def home():
     # print(partTwo.get_top_attractions(partTwo.pmi, weighted_tags))
     return render_template('base.html',title="home")
 
-# app.run(debug=True)
+app.run(debug=True)
