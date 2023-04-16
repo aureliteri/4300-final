@@ -1,4 +1,5 @@
 import json
+import string
 from nltk.stem import WordNetLemmatizer
 
 lemmatizer = WordNetLemmatizer()
@@ -11,7 +12,7 @@ arr = []
 for dictionary in input_array:
 
     description_value = dictionary['description']
-
+    description_value = description_value.translate(str.maketrans('', '', string.punctuation))
     words = description_value.split()
     lemmatized_description_value = ' '.join([lemmatizer.lemmatize(word) for word in words])
 
