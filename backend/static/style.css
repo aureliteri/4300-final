@@ -41,13 +41,13 @@ body {
 
 h1 {
     width: 50px;
-    margin-top: 40px;
-    margin-left: 40px;
+    margin-top: 51px;
+    margin-left: 60px;
 
     font-family: 'Oleo Script';
-    font-weight: 100;
-    font-size: 40px;
-    line-height: 40px;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 36px;
 
     display: flex;
     align-items: center;
@@ -59,14 +59,14 @@ h2 {
     margin-top: 0;
     font-family: 'Oleo Script';
     font-weight: 400;
-    font-size: 65px;
+    font-size: 54px;
 
     display: flex;
     justify-content: center;
     text-align: center;
 
     color: #E7B540;
-    text-shadow: -4px 4px 0px #48A369;
+    text-shadow: -3px 3px 0px #48A369;
 }
 
 .countryChosen,
@@ -77,8 +77,8 @@ h2 {
 }
 
 .country-box {
-    width: 700px;
-    height: 100px;
+    width: 717px;
+    height: 88px;
     margin-right: 20px;
     float: left;
 
@@ -93,7 +93,7 @@ h2 {
 .country-box-text {
     font-family: 'Roboto';
     font-weight: 700;
-    font-size: 35px;
+    font-size: 30px;
     line-height: 40px;
     justify-content: center;
 
@@ -107,8 +107,8 @@ h2 {
 }
 
 .country-icon {
-    height: 100px;
-    width: 100px;
+    height: 88px;
+    width: 88px;
 
     background: rgba(231, 181, 64, 0.6);
     border-radius: 20px;
@@ -126,9 +126,9 @@ h2 {
 
 #country-input {
     justify-content: center;
-    height: 65px;
+    height: 55px;
     width: 300px;
-    font-size: 30px;
+    font-size: 25px;
     margin-top: 15px;
     text-align: center;
     border-radius: 10px;
@@ -140,9 +140,9 @@ h2 {
 }
 
 #submitCountries {
-    width: 250px;
-    height: 115px;
-    margin-top: 200px;
+    width: 259px;
+    height: 101px;
+    margin-top: 275px;
 
     background-color: #48A369;
     opacity: 0.8;
