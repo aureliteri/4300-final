@@ -22,7 +22,7 @@ mysql_engine = MySQLDatabaseHandler(
     MYSQL_USER, MYSQL_USER_PASSWORD, MYSQL_PORT, MYSQL_DATABASE)
 
 # Path to init.sql file. This file can be replaced with your own file for testing on localhost, but do NOT move the init.sql file
-# mysql_engine.load_file_into_db()
+mysql_engine.load_file_into_db()
 
 app = Flask(__name__)
 CORS(app)
@@ -40,14 +40,14 @@ CORS(app)
 def sql_search(table_name):
     query_sql = f"""SELECT * FROM {table_name}"""
     keys = ["index", "attraction", "location", "blurb",
-            "url", "description", "lemmatized_description"]
+            "url", "description", "lemmatized_description", "tags"]
     # keys = ["index", "description", "lemmatized_description",
     #         "url", "attraction", "location", "blurb"]
     data = mysql_engine.query_selector(query_sql)
     return [dict(zip(keys, i)) for i in data]
 
 
-data = sql_search('atlasnew')
+data = sql_search('atlaspages')
 partOne = PartOne(data, 5000)
 partTwo = PartTwo(partOne._tfidf_vec,
                   partOne._array_with_country,
@@ -58,7 +58,6 @@ partTwo = PartTwo(partOne._tfidf_vec,
 def generate_tags(countries):
     tag_dict = partOne.generate_tags([countries])
     print(tag_dict, type(tag_dict))
-
     return tag_dict
 
 
@@ -88,7 +87,6 @@ def generate_output():
     output_tuple = partTwo.get_top_attractions(partTwo.pmi, tags)
     output = [location for score, location in output_tuple]
     print(output)
-
     return output
 
 
@@ -97,4 +95,4 @@ def home():
     return render_template('base.html', title="home")
 
 
-app.run(debug=True)
+# app.run(debug=True)
