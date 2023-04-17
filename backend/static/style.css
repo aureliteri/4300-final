@@ -2,43 +2,6 @@ body {
     background-color: rgb(251, 251, 243);
 }
 
-.scroll-box {
-    justify-self: center;
-    display: flex;
-    width: 500px;
-    white-space: nowrap;
-    overflow-y: scroll;
-    height: 325px;
-    border-radius: 5%;
-    /* background-color: gray; */
-    border: 1px solid gray;
-    margin: 10px;
-}
-
-/* .tag-box {
-    justify-self: center;
-    display: flex;
-    width: 500px;
-    white-space: nowrap;
-    overflow-y: scroll;
-    height: 550px;
-    border-radius: 5%;
-    border: 1px solid gray;
-    margin: 10px;
-} */
-
-/* .tag-round {
-    background-color: lightgray;
-    border-radius: 10%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
-    height: 500px;
-    width: 250px;
-} */
-
 h1 {
     position: fixed;
     width: 50px;
@@ -57,7 +20,6 @@ h1 {
 }
 
 h2 {
-    /* margin-top: 0; */
     margin-top: 180px;
     font-family: 'Oleo Script';
     font-weight: 400;
@@ -130,15 +92,11 @@ h2 {
     justify-content: center;
     height: 55px;
     width: 300px;
-    font-size: 25px;
+    font-size: 20px;
     margin-top: 15px;
     text-align: center;
     border-radius: 10px;
     border: none;
-}
-
-.hidden {
-    display: none;
 }
 
 #submitCountries,
@@ -163,20 +121,30 @@ h2 {
 }
 
 .part-1,
-.part-2 {
+.part-2,
+.part-3 {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-bottom: 500px;
 }
 
-/* .part-2 {
-    margin-bottom: 500px;
+.part-2,
+.part-3 {
+    margin-top: 400px;
+}
 
-} */
+.part-3 {
+    margin-bottom: 300px;
 
-/* need to fix scaling a bit */
+}
+
+.tags-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .tag-box {
     width: 777px;
     height: 290.5px;
@@ -202,21 +170,19 @@ h2 {
 }
 
 input[type=checkbox]+label {
-    margin: 4px;
-    height: 62.4px;
+    margin: 6px;
+    height: 60px;
     padding-left: 30px;
     padding-right: 30px;
 
-    background-color: #C9290E;
-    opacity: 0.7;
-    border-radius: 25px;
+    background-color: #D1593D;
+    border-radius: 20px;
     float: left;
     justify-content: center;
 }
 
 input[type=checkbox]:checked+label {
-    background-color: #48A369;
-    opacity: 0.8;
+    background-color: #67AB76;
 }
 
 .tag label {
@@ -230,5 +196,41 @@ input[type=checkbox]:checked+label {
     text-align: center;
 
     color: #FFFFFF;
+}
 
+input[type=checkbox]+label:hover {
+    cursor: pointer;
+}
+
+.part-3 h2 {
+    text-shadow: -3px 3px 0px #C9290E;
+}
+
+#outputBox {
+    width: 862.2px;
+}
+
+.output-loc {
+    width: 380px;
+    height: 70px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 5px;
+    float: left;
+
+    justify-content: center;
+
+    background: #E4AF71;
+    border-radius: 10px;
+    display: flex;
+
+    font-family: 'Oleo Script';
+    font-weight: 700;
+    font-size: 20px;
+
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #FFFFFF;
 }
