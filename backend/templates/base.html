@@ -18,7 +18,7 @@
     <main>
         <h1>Off the Beaten Path</h1>
 
-        <div class="part-1">
+        <div class="part-1" id="partOne">
             <h2> Where do you want to go?</h2>
 
             <div id="countryChosen">
@@ -44,20 +44,42 @@
                 </form>
             </div>
 
+
             <button id="submitCountries">
                 <!-- cant get fa badge check to work -->
                 <h3><i class="fa-solid fa-check fa-3x"></i></h3>
             </button>
         </div>
 
-        <div class="tag-box" id="tag-box">
-            <form class=" form-2 tag-round">
-                <label id="tags-label" class="user-field" for="tags">Tags to include:</label>
-                <!-- <input id="tags-input" type="text" /> -->
-                <div id=tags-checker></div>
-                <button class="user-field" id="submit-tags" type="submit">Submit</button>
+        <div class="part-2" id="partTwo">
+            <!-- <div class="tag-box" id="tag-box">
+                <form class=" form-2 tag-round">
+                    <label id="tags-label" class="user-field" for="tags">Tags to include:</label>
+                    
+            <div id=tags-checker></div>
+            <button class="user-field" id="submit-tags" type="submit">Submit</button>
             </form>
+        </div> -->
+
+            <h2>What interests you?</h2>
+
+            <div class="tag-box" id="tagBox">
+                <form class=" form-2 tag-round">
+
+                    <div id=tags-checker></div>
+                    <!-- <button class="user-field" id="submit-tags" type="submit">Submit</button> -->
+
+
+                </form>
+            </div>
+
+            <button id="submitTags">
+                <!-- cant get fa badge check to work -->
+                <h3><i class="fa-solid fa-check fa-3x"></i></h3>
+            </button>
         </div>
+
+
         <div id="output-box">
             <div class="output-list" id="output-box"></div>
         </div>
@@ -90,7 +112,7 @@
         });
 
 
-        document.getElementById("tag-box").style.visibility = 'hidden';
+        // document.getElementById("tag-box").style.visibility = 'hidden';
         document.getElementById("output-box").style.visibility = 'hidden';
 
         var tags = []
@@ -120,8 +142,8 @@
         }
 
         function tagBoxTemplate(tag) {
-            return `<div class=''>
-                <label for="tags-input-${tag}">  <input class = "tags-input" value =${tag} id="tags-input-${tag}" type="checkbox" /> ${tag}</label><br>
+            return `<div class="tag">
+                 <input class = "tags-input hidden" value =${tag} id="tags-input-${tag}" type="checkbox" /> <label for="tags-input-${tag}"> ${tag} </label>
             </div>`
         }
 
@@ -135,7 +157,7 @@
         countriesSubmit.onclick = function () {
             console.log(countryInput.value);
 
-            document.getElementById("tag-box").style.visibility = 'visible';
+            // document.getElementById("tag-box").style.visibility = 'visible';
 
             fetch("/countries?" + new URLSearchParams({ countries: countryInput.value }).toString())
                 .then((response) => response.json())
@@ -147,6 +169,9 @@
                     })
                 }
                 );
+
+            var tagsContainer = document.getElementById("partTwo");
+            tagsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
         };
 
         var tagsInput = document.getElementsByClassName("tags-input");
