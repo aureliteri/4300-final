@@ -18,7 +18,7 @@
     <main>
         <h1>Off the Beaten Path</h1>
 
-        <div class="part-1">
+        <div class="part-1" id="partOne">
             <h2> Where do you want to go?</h2>
 
             <div id="countryChosen">
@@ -44,22 +44,32 @@
                 </form>
             </div>
 
+
             <button id="submitCountries">
                 <!-- cant get fa badge check to work -->
                 <h3><i class="fa-solid fa-check fa-3x"></i></h3>
             </button>
         </div>
 
-        <div class="tag-box" id="tag-box">
-            <form class=" form-2 tag-round">
-                <label id="tags-label" class="user-field" for="tags">Tags to include:</label>
-                <!-- <input id="tags-input" type="text" /> -->
-                <div id=tags-checker></div>
-                <button class="user-field" id="submit-tags" type="submit">Submit</button>
+        <div class="part-2 hidden" id="partTwo">
+            <h2>What interests you?</h2>
+
+            <form class="tags-form">
+                <div class="tag-box" id="tagBox">
+                    <div id=tags-checker></div>
+                </div>
+
+                <button id="submitTags" type="submit">
+                    <!-- cant get fa badge check to work -->
+                    <h3><i class="fa-solid fa-check fa-3x"></i></h3>
+                </button>
             </form>
         </div>
-        <div id="output-box">
-            <div class="output-list" id="output-box"></div>
+
+        <div class="part-3 hidden" id="partThree">
+            <h2>Your Suggested Paths</h2>
+
+            <div id="outputBox"></div>
         </div>
     </main>
     <script>
@@ -76,7 +86,6 @@
         var countryInput = document.getElementById("country-input");
         document.querySelector('form.choose-form').addEventListener('submit', function (e) {
             e.preventDefault();
-            console.log(countryInput.value);
 
             var countryEditView = document.getElementById("countryEditing");
             countryEditView.classList.add("hidden");
@@ -88,10 +97,6 @@
             newCountry.innerHTML = countryInput.value;
 
         });
-
-
-        document.getElementById("tag-box").style.visibility = 'hidden';
-        document.getElementById("output-box").style.visibility = 'hidden';
 
         var tags = []
         var tag_len = 0
@@ -120,22 +125,20 @@
         }
 
         function tagBoxTemplate(tag) {
-            return `<div class=''>
-                <label for="tags-input-${tag}">  <input class = "tags-input" value =${tag} id="tags-input-${tag}" type="checkbox" /> ${tag}</label><br>
+            return `<div class="tag">
+                 <input class = "tags-input hidden" value =${tag} id="tags-input-${tag}" type="checkbox" /> <label for="tags-input-${tag}"> ${tag} </label>
             </div>`
         }
 
-        function outputBoxTemplate(loc) {
-            return `<div class=''>
-                <p class='output-loc'>${loc}</p>
-            </div>`
+        function outputBoxTemplate(loc, count) {
+            return `<p class='output-loc'>${count}. ${loc}</p>`
         }
 
         var countriesSubmit = document.getElementById("submitCountries");
         countriesSubmit.onclick = function () {
             console.log(countryInput.value);
 
-            document.getElementById("tag-box").style.visibility = 'visible';
+            document.getElementById("partTwo").classList.remove("hidden");
 
             fetch("/countries?" + new URLSearchParams({ countries: countryInput.value }).toString())
                 .then((response) => response.json())
@@ -147,11 +150,17 @@
                     })
                 }
                 );
+
+            var tagsContainer = document.getElementById("tagBox");
+            tagsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
         };
 
         var tagsInput = document.getElementsByClassName("tags-input");
-        document.querySelector('form.form-2').addEventListener('submit', function (e) {
+        document.querySelector('form.tags-form').addEventListener('submit', function (e) {
             e.preventDefault();
+
+            document.getElementById("partThree").classList.remove("hidden");
+
             var values = []
             for (const input of tagsInput) {
                 if (input.checked) {
@@ -163,14 +172,17 @@
             fetch("/output?" + new URLSearchParams({ tags: values }).toString())
                 .then((response) => response.json())
                 .then((d) => {
+                    count = 1;
                     d.forEach(location => {
-                        let tempDiv = document.createElement("div")
-                        tempDiv.innerHTML = outputBoxTemplate(location)
-                        document.getElementById("output-box").appendChild(tempDiv)
-                    })
+                        let tempDiv = document.createElement("div");
+                        tempDiv.innerHTML = outputBoxTemplate(location, count);
+                        document.getElementById("outputBox").appendChild(tempDiv)
+                        count += 1;
+                    });
                 }
                 );
-            document.getElementById("output-box").style.visibility = 'visible';
+            var outputContainer = document.getElementById("outputBox");
+            outputContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
         });
 

@@ -94,20 +94,6 @@ def generate_output():
 
 @app.route("/")
 def home():
-    # data = sql_search('atlasfull')
-    # partOne = PartOne(data, 5000)
-    # tag_dict = partOne.generate_tags(["Algeria"])
-    # print("tag_dict")
-    # print(tag_dict)
-
-    # partTwo = PartTwo(partOne._tfidf_vec,
-    #                   partOne._array_with_country,
-    #                   partOne._attraction_by_token,
-    #                   partOne._index_to_vocab)
-    # print(partTwo.find_most_similar_words(partTwo.pmi, "castle"))
-    # weighted_tags = ["castle", "castles", "hungary", "romania", "von"]
-    # # print(tag_dict['ranked_words'])
-    # print(partTwo.get_top_attractions(partTwo.pmi, weighted_tags))
     return render_template('base.html', title="home")
 
 

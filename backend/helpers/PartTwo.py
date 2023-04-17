@@ -21,7 +21,7 @@ class PartTwo:
                                min_df=min_df)
 
     def generate_tf(self, count_vec):
-        return count_vec.fit_transform([d["description"].lower() for d in self._array_with_country]).toarray()
+        return count_vec.fit_transform([d["lemmatized_description"].lower() for d in self._array_with_country]).toarray()
 
     def generate_pmi_mat(self):
         df = np.sum(self._attraction_by_token.T, 1)
@@ -50,7 +50,6 @@ class PartTwo:
             for tag in weighted_tags:
                 most_similar_words = set(
                     [x[0] for x in self.find_most_similar_words(sim_mat, tag)])
-                print("intersection")
                 score += len(list(split_description.intersection(most_similar_words)))
             scores.append(tuple((score, destination["attraction"])))
         output = sorted(scores, key=lambda x: x[0], reverse=True)[:10]
