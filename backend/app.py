@@ -18,7 +18,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # MYSQL_PORT = 4534
 # MYSQL_DATABASE = "travellocomotion_db"
 MYSQL_USER = "root"
-MYSQL_USER_PASSWORD = "Nikki701ap"
+MYSQL_USER_PASSWORD = ""
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "atlas_obscura_testing_data"
 
