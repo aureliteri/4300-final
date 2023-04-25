@@ -13,16 +13,20 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # These are the DB credentials for your OWN MySQL
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
+# MYSQL_USER = "root"
+# MYSQL_USER_PASSWORD = ""
+# MYSQL_PORT = 4534
+# MYSQL_DATABASE = "travellocomotion_db"
 MYSQL_USER = "root"
-MYSQL_USER_PASSWORD = ""
-MYSQL_PORT = 4534
-MYSQL_DATABASE = "travellocomotion_db"
+MYSQL_USER_PASSWORD = "Nikki701ap"
+MYSQL_PORT = 3306
+MYSQL_DATABASE = "atlas_obscura_testing_data"
 
 mysql_engine = MySQLDatabaseHandler(
     MYSQL_USER, MYSQL_USER_PASSWORD, MYSQL_PORT, MYSQL_DATABASE)
 
 # Path to init.sql file. This file can be replaced with your own file for testing on localhost, but do NOT move the init.sql file
-mysql_engine.load_file_into_db()
+#mysql_engine.load_file_into_db()
 
 app = Flask(__name__)
 CORS(app)
@@ -39,20 +43,20 @@ CORS(app)
 
 def sql_search(table_name):
     query_sql = f"""SELECT * FROM {table_name}"""
-    keys = ["index", "attraction", "location", "blurb",
-            "url", "description", "tags", "lemmatized_description"]
-    # keys = ["index", "description", "lemmatized_description",
-    #         "url", "attraction", "location", "blurb"]
+    # keys = ["index", "attraction", "location", "blurb",
+    #         "url", "description", "tags", "lemmatized_description"]
+    keys = ["index", "description", "lemmatized_description",
+            "url", "attraction", "location", "blurb"]
     data = mysql_engine.query_selector(query_sql)
     return [dict(zip(keys, i)) for i in data]
 
 
-data = sql_search('atlas_data')
+data = sql_search('atlasnew')
 partOne = PartOne(data, 5000)
 partTwo = PartTwo(partOne._tfidf_vec,
                   partOne._array_with_country,
                   partOne._attraction_by_token,
-                  partOne._index_to_vocab)
+                  partOne._index_to_vocab, data)
 
 
 def generate_tags(countries):
@@ -95,4 +99,4 @@ def home():
     return render_template('base.html', title="home")
 
 
-# app.run(debug=True)
+app.run(debug=True)
