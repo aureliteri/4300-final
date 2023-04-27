@@ -1,4 +1,5 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction import text
 import numpy as np
 
 MAX_DF = 0.7
@@ -9,25 +10,29 @@ class PartOne:
 
   def __init__(self, raw_data, max_features):
     self._raw_data = raw_data
-    self._array_with_country = self.preprocess_data(raw_data)
-    self._tfidf_vec = self.build_vectorizer(max_features, "english")
+    (data, country_array) = self.preprocess_data(raw_data)
+    self._array_with_country = data
+    self._tfidf_vec = self.build_vectorizer(country_array, max_features)
     self._attraction_by_token = self.generate_tf_idf(self._tfidf_vec)
     self._index_to_vocab = self.generate_index_to_vocab(self._tfidf_vec)
 
   def preprocess_data(self, data):
+    country_name_array = []
     for d in data:
       loc = d['location']
       country = loc.split(', ')[-1]
+      country_name_array.append(country.lower())
       d['country'] = country
-    return data
+    return (data, country_name_array)
   
-  def build_vectorizer(self, max_features, stop_words, max_df = MAX_DF, min_df = MIN_DF, norm='l2'):
+  def build_vectorizer(self, country_names, max_features, max_df = MAX_DF, min_df = MIN_DF, norm='l2'):
+     stop_words = text.ENGLISH_STOP_WORDS.union(country_names)
      return TfidfVectorizer(max_features = max_features, 
                            stop_words = stop_words, 
                            max_df = max_df, 
                            min_df = min_df,
                            norm = norm,
-                           token_pattern=u'(?ui)\\b\\w*[a-z]+\\w*\\b')
+                           token_pattern=r'\b\w{3,}\b')
   
   def generate_tf_idf(self, tfidf_vec):
     return tfidf_vec.fit_transform([d["lemmatized_description"].lower() for d in self._array_with_country]).toarray()
