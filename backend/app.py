@@ -13,14 +13,14 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # These are the DB credentials for your OWN MySQL
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
-# MYSQL_USER = "root"
-# MYSQL_USER_PASSWORD = ""
-# MYSQL_PORT = 4534
-# MYSQL_DATABASE = "travellocomotion_db"
 MYSQL_USER = "root"
 MYSQL_USER_PASSWORD = ""
-MYSQL_PORT = 3306
-MYSQL_DATABASE = "atlas_obscura_testing_data"
+MYSQL_PORT = 4534
+MYSQL_DATABASE = "travellocomotion_db"
+# MYSQL_USER = "root"
+# MYSQL_USER_PASSWORD = ""
+# MYSQL_PORT = 3306
+# MYSQL_DATABASE = "atlas_obscura_testing_data"
 
 mysql_engine = MySQLDatabaseHandler(
     MYSQL_USER, MYSQL_USER_PASSWORD, MYSQL_PORT, MYSQL_DATABASE)
@@ -43,10 +43,10 @@ CORS(app)
 
 def sql_search(table_name):
     query_sql = f"""SELECT * FROM {table_name}"""
-    # keys = ["index", "attraction", "location", "blurb",
-    #         "url", "description", "tags", "lemmatized_description"]
-    keys = ["index", "description", "lemmatized_description",
-            "url", "attraction", "location", "blurb"]
+    keys = ["index", "attraction", "location", "blurb",
+            "url", "description", "tags", "lemmatized_description"]
+    # keys = ["index", "description", "lemmatized_description",
+    #         "url", "attraction", "location", "blurb"]
     data = mysql_engine.query_selector(query_sql)
     return [dict(zip(keys, i)) for i in data]
 
