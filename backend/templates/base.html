@@ -130,8 +130,8 @@
             </div>`
         }
 
-        function outputBoxTemplate(loc, count) {
-            return `<p class='output-loc'>${count}. ${loc}</p>`
+        function outputBoxTemplate(loc, count, url) {
+            return `<a class='output-loc' href=${url}>${count}. ${loc}</a>`
         }
 
         var countriesSubmit = document.getElementById("submitCountries");
@@ -171,11 +171,14 @@
 
             fetch("/output?" + new URLSearchParams({ tags: values }).toString())
                 .then((response) => response.json())
-                .then((d) => {
+                .then((list) => {
                     count = 1;
-                    d.forEach(location => {
+
+                    list.forEach((item) => {
+                        let location =  item[0]
+                        let url = item[1]
                         let tempDiv = document.createElement("div");
-                        tempDiv.innerHTML = outputBoxTemplate(location, count);
+                        tempDiv.innerHTML = outputBoxTemplate(location, count, url);
                         document.getElementById("outputBox").appendChild(tempDiv)
                         count += 1;
                     });
