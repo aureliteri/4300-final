@@ -217,9 +217,8 @@ input[type=checkbox]+label:hover {
     padding-right: 10px;
     margin: 5px;
     float: left;
-
     justify-content: center;
-
+    text-decoration:none;
     background: #E4AF71;
     border-radius: 10px;
     display: flex;
@@ -234,3 +233,5 @@ input[type=checkbox]+label:hover {
 
     color: #FFFFFF;
 }
+
+.output-loc:hover { color: #D1593D; }
