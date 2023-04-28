@@ -3,7 +3,7 @@ body {
 }
 
 .sun {
-  position: fixed;
+  position: absolute;
   width: 95px;
   margin-top: 3%;
   margin-left: 3%;
@@ -68,3 +68,9 @@ body {
   cursor: pointer;
 }
 
+.mountains {
+  position: absolute;
+  width: 60%;
+  bottom: 0px;
+  right: 0px;
+}
