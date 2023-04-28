@@ -142,7 +142,7 @@
 
             document.getElementById("partTwo").classList.remove("hidden");
 
-            fetch("/countries?" + new URLSearchParams({ countries: countryInput.value }).toString())
+            fetch("/countries?" + new URLSearchParams({ countries: countryInput.value }).toString().toLowerCase())
                 .then((response) => response.json())
                 .then((d) => {
                     d.forEach(tag => {

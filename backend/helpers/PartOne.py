@@ -21,8 +21,9 @@ class PartOne:
     for d in data:
       loc = d['location']
       country = loc.split(', ')[-1]
-      country_name_array.append(country.lower())
-      d['country'] = country
+      country_name = country.lower()
+      country_name_array.append(country_name)
+      d['country'] = country_name
     return (data, country_name_array)
   
   def build_vectorizer(self, country_names, max_features, max_df = MAX_DF, min_df = MIN_DF, norm='l2'):
