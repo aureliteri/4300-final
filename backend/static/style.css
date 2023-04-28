@@ -269,6 +269,11 @@ input[type=checkbox]+label:hover {
     text-align: center;
 
     color: #FFFFFF;
+    transition: background-color 0.3s ease;
+    transition: color 0.3s ease;
 }
 
-.output-loc:hover { color: #D1593D; }
+.output-loc:hover { 
+    cursor: pointer;
+    background-color: #D3924D;
+}
