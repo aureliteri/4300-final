@@ -16,7 +16,7 @@
 
 <body>
     <main>
-        <h1>Off the Beaten Path</h1>
+        <h1 onclick="loadHomePage()">Off the Beaten Path</h1>
 
         <div class="part-1" id="partOne">
             <h2> Where do you want to go?</h2>
@@ -188,6 +188,10 @@
             outputContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
         });
+
+        function loadHomePage() {
+            window.location.href = "/";
+          }
 
     </script>
 </body>
