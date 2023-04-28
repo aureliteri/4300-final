@@ -1,0 +1,70 @@
+body {
+  background-color: rgb(251, 251, 243);
+}
+
+.sun {
+  position: fixed;
+  width: 95px;
+  margin-top: 3%;
+  margin-left: 3%;
+}
+
+.container {
+  position: absolute;
+  align-items: left;
+  width: 40%;
+  height: 300px;
+  left: 12.5%;
+  top: 28%;
+}
+
+.title {
+  font-family: 'Oleo Script';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 105px;
+  line-height: 90%;
+  /* or 90% */
+
+  display: flex;
+  align-items: center;
+  letter-spacing: 4.5px;
+
+  color: #e7b540;
+
+  text-shadow: -5px 5px 0px #c9290e;
+}
+
+.discover-button {
+  background: #e7b540;
+  box-shadow: -5px 5px 0px #c9290e;
+  border-radius: 15px;
+  width: 60%;
+  height: 18%;
+  left: 200px;
+  margin-top: 33px;
+
+  display: flex;
+  border: none;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  color: #fbfbf3;
+
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 100;
+  font-size: 18px;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.discover-button:hover {
+  box-shadow: none;
+  transform: translate(-5px, 5px);
+  cursor: pointer;
+}
+

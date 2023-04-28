@@ -94,9 +94,13 @@ def generate_output():
     return output
 
 
-@app.route("/")
+@app.route("/home")
 def home():
     return render_template('base.html', title="home")
+
+@app.route("/")
+def landing():
+    return render_template('landing.html', title="landing")
 
 
 # app.run(debug=True)
