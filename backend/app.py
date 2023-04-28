@@ -89,7 +89,7 @@ def generate_output():
     tags = request.args.get("tags")
     tags = tags.strip().split(",")
     output_tuple = partTwo.get_top_attractions(partTwo.pmi, tags)
-    output = [location for score, location in output_tuple]
+    output = [(location, url) for score, location, url in output_tuple]
     print(output)
     return output
 

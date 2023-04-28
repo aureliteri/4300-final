@@ -27,21 +27,23 @@ class PartTwo:
         return count_vec.fit_transform([d["lemmatized_description"].lower() for d in self._array_with_country]).toarray()
 
     def svd(self):
-        td_matrix = self._tfidf_vec.fit_transform([x["lemmatized_description"].lower() for x in self.data])
+        td_matrix = self._tfidf_vec.fit_transform(
+            [x["lemmatized_description"].lower() for x in self.data])
         word_to_index = self._tfidf_vec.vocabulary_
-        index_to_word = {i:t for t,i in word_to_index.items()}
+        index_to_word = {i: t for t, i in word_to_index.items()}
         tf = self._token_counts.astype(float)
         svd_done = svds(td_matrix, k=40)
         words_compressed = svd_done[2].transpose()
-        words_compressed_normed = normalize(words_compressed, axis = 1)
+        words_compressed_normed = normalize(words_compressed, axis=1)
         return word_to_index, words_compressed_normed
-        
-    def find_similar_with_svd(self, word_in, word_to_index, words_compressed_normed):
-        if word_in not in word_to_index: return "Not in vocab."
-        sims = words_compressed_normed.dot(words_compressed_normed[word_to_index[word_in],:])
-        asort = np.argsort(-sims)[:TOPK+1]
-        return [(self._index_to_vocab[i],sims[i]) for i in asort[1:]]
 
+    def find_similar_with_svd(self, word_in, word_to_index, words_compressed_normed):
+        if word_in not in word_to_index:
+            return "Not in vocab."
+        sims = words_compressed_normed.dot(
+            words_compressed_normed[word_to_index[word_in], :])
+        asort = np.argsort(-sims)[:TOPK+1]
+        return [(self._index_to_vocab[i], sims[i]) for i in asort[1:]]
 
     def generate_pmi_mat(self):
         df = np.sum(self._attraction_by_token.T, 1)
@@ -72,7 +74,8 @@ class PartTwo:
                 most_similar_words = set(
                     [x[0] for x in self.find_similar_with_svd(tag, word_to_index, words_compressed_normed)])
                 score += len(list(split_description.intersection(most_similar_words)))
-            scores.append(tuple((score, destination["attraction"])))
+            scores.append(
+                tuple((score, destination["attraction"], destination["url"])))
         output = sorted(scores, key=lambda x: x[0], reverse=True)[:10]
         print("Destinations to visit:")
         return output
