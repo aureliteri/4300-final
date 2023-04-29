@@ -56,7 +56,8 @@
 
             <form class="tags-form">
                 <div class="tag-box" id="tagBox">
-                    <div id=tags-checker></div>
+                    <div id=tags-checker>
+                    </div>
                 </div>
 
                 <button id="submitTags" type="submit">
@@ -127,9 +128,9 @@
         }
 
         function tagBoxTemplate(tag) {
-            return `<div class="tag">
-                 <input class = "tags-input hidden" value =${tag} id="tags-input-${tag}" type="checkbox" /> <label for="tags-input-${tag}"> ${tag} </label>
-            </div>`
+            return `<div class="tag tags-input tag-style tag-state-0 tag-${tag}" id="tag-${tag}">                
+                        <span >${tag}</span>
+                    </div>`
         }
 
         function outputBoxTemplate(loc, count, url) {
@@ -149,6 +150,25 @@
                         let tempDiv = document.createElement("div")
                         tempDiv.innerHTML = tagBoxTemplate(tag)
                         document.getElementById("tags-checker").appendChild(tempDiv)
+
+                        var tagGet = document.getElementById(String("tag-"+tag))
+                        let click = 0;
+                        tagGet.addEventListener("click", function(){
+                            tagGet.classList.remove("tag-state-0")
+                            tagGet.classList.remove("tag-state-1")
+                            tagGet.classList.remove("tag-state-2")
+
+                            click += 1;
+                            if (click % 3 == 0){
+                                tagGet.classList.add("tag-state-0");
+                            }
+                            else if (click % 3 == 1){
+                                tagGet.classList.add("tag-state-1");
+                            }
+                            else if (click % 3 == 2){
+                                tagGet.classList.add("tag-state-2");
+                            }
+                        });
                     })
                 }
                 );
@@ -158,20 +178,34 @@
         };
 
         var tagsInput = document.getElementsByClassName("tags-input");
+        var tagsPosInput = document.getElementsByClassName("tag-state-1");
+        var tagsNegInput = document.getElementsByClassName("tag-state-2");
+
         document.querySelector('form.tags-form').addEventListener('submit', function (e) {
             e.preventDefault();
 
             document.getElementById("partThree").classList.remove("hidden");
 
             var values = []
+            var posVals = []
+            var negVals = []
             for (const input of tagsInput) {
                 if (input.checked) {
                     values.push(input.value)
                 }
             }
-            console.log(values)
+            for (const input of tagsPosInput) {
+                posVals.push(input.innerText)
+            }
+            for (const input of tagsNegInput) {
+                negVals.push(input.innerText)
+            }
+            
+            // console.log(values, tagsPosInput, tagsNegInput)
 
-            fetch("/output?" + new URLSearchParams({ tags: values }).toString())
+            console.log(values, posVals, negVals)
+
+            fetch("/output?" + new URLSearchParams({ tags: values , pos: posVals, neg: negVals }).toString())
                 .then((response) => response.json())
                 .then((list) => {
                     count = 1;

@@ -13,20 +13,20 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # These are the DB credentials for your OWN MySQL
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
+# MYSQL_USER = "root"
+# MYSQL_USER_PASSWORD = "america!"
+# MYSQL_PORT = 4534
+# MYSQL_DATABASE = "atlasdb"
 MYSQL_USER = "root"
 MYSQL_USER_PASSWORD = ""
-MYSQL_PORT = 4534
-MYSQL_DATABASE = "travellocomotion_db"
-# MYSQL_USER = "root"
-# MYSQL_USER_PASSWORD = ""
-# MYSQL_PORT = 3306
-# MYSQL_DATABASE = "atlas_obscura_testing_data"
+MYSQL_PORT = 3306
+MYSQL_DATABASE = ""
 
 mysql_engine = MySQLDatabaseHandler(
     MYSQL_USER, MYSQL_USER_PASSWORD, MYSQL_PORT, MYSQL_DATABASE)
 
 # Path to init.sql file. This file can be replaced with your own file for testing on localhost, but do NOT move the init.sql file
-mysql_engine.load_file_into_db()
+# mysql_engine.load_file_into_db()
 
 app = Flask(__name__)
 CORS(app)
@@ -51,7 +51,7 @@ def sql_search(table_name):
     return [dict(zip(keys, i)) for i in data]
 
 
-data = sql_search('atlas_data')
+data = sql_search('atlaspages')
 partOne = PartOne(data, 5000)
 partTwo = PartTwo(partOne._tfidf_vec,
                   partOne._array_with_country,
@@ -87,6 +87,11 @@ def get_countries():
 @app.route("/output")
 def generate_output():
     tags = request.args.get("tags")
+    pos = request.args.get("pos")
+    neg = request.args.get("neg")
+
+    pos = pos.strip().split(",")
+    neg = neg.strip().split(",")
     tags = tags.strip().split(",")
     output_tuple = partTwo.get_top_attractions(partTwo.pmi, tags)
     output = [(location, url) for score, location, url in output_tuple]
@@ -98,9 +103,10 @@ def generate_output():
 def home():
     return render_template('base.html', title="home")
 
+
 @app.route("/")
 def landing():
     return render_template('landing.html', title="landing")
 
 
-# app.run(debug=True)
+app.run(debug=True)

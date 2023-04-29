@@ -201,7 +201,7 @@ input[type="text"], textarea {
     opacity: 0;
 }
 
-input[type=checkbox]+label {
+/* input[type=checkbox]+label {
     margin: 6px;
     height: 60px;
     padding-left: 30px;
@@ -215,9 +215,44 @@ input[type=checkbox]+label {
 
 input[type=checkbox]:checked+label {
     background-color: #67AB76;
+} */
+
+.tag-style{
+    margin: 6px;
+    height: 60px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border-radius: 20px;
+    float: left;
+    justify-content: center;
+}
+
+.tag-state-1{
+    background-color: #67AB76;
+}
+
+.tag-state-2{
+    background-color: #D1593D;
+}
+.tag-state-0{
+    background-color: #b1b1b1;
+
 }
 
 .tag label {
+    font-family: 'Roboto';
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 21px;
+
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #FFFFFF;
+}
+
+.tag {
     font-family: 'Roboto';
     text-transform: uppercase;
     font-weight: 700;
