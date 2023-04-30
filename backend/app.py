@@ -51,7 +51,7 @@ def sql_search(table_name):
     return [dict(zip(keys, i)) for i in data]
 
 
-data = sql_search('atlasnew')
+data = sql_search('atlas_data')
 partOne = PartOne(data, 5000)
 partTwo = PartTwo(partOne._tfidf_vec,
                   partOne._array_with_country,
