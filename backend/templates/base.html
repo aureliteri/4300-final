@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../static/style.css">
 </head>
 
-<body>
+<body id="body">
     <main>
         <h1 onclick="loadHomePage()">Off the Beaten Path</h1>
         <button class="reset" onClick="window.location.reload();">Reset</button>
@@ -150,6 +150,7 @@
                 document.getElementById("partTwo").classList.remove("hidden");
                 document.getElementById("countryEditing").remove();
                 document.getElementById("editCountry").disabled = true;
+                document.getElementById("body").style.overflow = "visible";
 
                 fetch("/countries?" + new URLSearchParams({ countries: countryInput.value }).toString().toLowerCase())
                     .then((response) => response.json())
@@ -197,6 +198,7 @@
             e.preventDefault();
 
             document.getElementById("partThree").classList.remove("hidden");
+            document.getElementById("partTwo").style.marginBottom = 0;
 
             var values = []
             var posVals = []
