@@ -17,9 +17,10 @@
 <body>
     <main>
         <h1 onclick="loadHomePage()">Off the Beaten Path</h1>
+        <button class="reset" onClick="window.location.reload();">Reset</button>
 
         <div class="part-1" id="partOne">
-            <h2> Where do you want to go?</h2>
+            <h2> What is your favorite destination?</h2>
 
             <div id="countryChosen">
                 <div class="country-box">
@@ -54,7 +55,7 @@
         <div class="part-2 hidden" id="partTwo">
             <h2>What interests you?</h2>
 
-            <form class="tags-form">
+            <form class="tags-form" id="tagsForm">
                 <div class="tag-box" id="tagBox">
                     <div id=tags-checker>
                     </div>
@@ -70,7 +71,7 @@
         <div class="part-3 hidden" id="partThree">
             <h2>Your Suggested Paths</h2>
 
-            <div id="outputBox"></div>
+            <div id="outputBox"><i class="fa-solid fa-spinner fa-spin-pulse fa-4x" style="color: #E4AF71;"></i></div>
         </div>
     </main>
     <script>
@@ -134,47 +135,58 @@
         }
 
         function outputBoxTemplate(loc, count, url) {
-            return `<a class='output-loc' target='_blank' href=${url}>${count}. ${loc}</a>`
+            return `<a class='output-loc' target='_blank' href=${url}>${count}. <span class="underline"> ${loc}</span></a>`
         }
 
         var countriesSubmit = document.getElementById("submitCountries");
+        var newCountry = true;
         countriesSubmit.onclick = function () {
-            console.log(countryInput.value);
+            if (newCountry) {
+                console.log(countryInput.value);
 
-            document.getElementById("partTwo").classList.remove("hidden");
+                var tagsContainer = document.getElementById("partTwo");
+                tagsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-            fetch("/countries?" + new URLSearchParams({ countries: countryInput.value }).toString().toLowerCase())
-                .then((response) => response.json())
-                .then((d) => {
-                    d.forEach(tag => {
-                        let tempDiv = document.createElement("div")
-                        tempDiv.innerHTML = tagBoxTemplate(tag)
-                        document.getElementById("tags-checker").appendChild(tempDiv)
+                document.getElementById("partTwo").classList.remove("hidden");
+                document.getElementById("countryEditing").remove();
+                document.getElementById("editCountry").disabled = true;
 
-                        var tagGet = document.getElementById(String("tag-"+tag))
-                        let click = 0;
-                        tagGet.addEventListener("click", function(){
-                            tagGet.classList.remove("tag-state-0")
-                            tagGet.classList.remove("tag-state-1")
-                            tagGet.classList.remove("tag-state-2")
+                fetch("/countries?" + new URLSearchParams({ countries: countryInput.value }).toString().toLowerCase())
+                    .then((response) => response.json())
+                    .then((d) => {
+                        d.forEach(tag => {
+                            let tempDiv = document.createElement("div")
+                            tempDiv.innerHTML = tagBoxTemplate(tag)
+                            document.getElementById("tags-checker").appendChild(tempDiv)
 
-                            click += 1;
-                            if (click % 3 == 0){
-                                tagGet.classList.add("tag-state-0");
-                            }
-                            else if (click % 3 == 1){
-                                tagGet.classList.add("tag-state-1");
-                            }
-                            else if (click % 3 == 2){
-                                tagGet.classList.add("tag-state-2");
-                            }
-                        });
-                    })
-                }
-                );
+                            var tagGet = document.getElementById(String("tag-" + tag))
+                            let click = 0;
 
-            var tagsContainer = document.getElementById("partTwo");
-            tagsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            tagGet.addEventListener("click", function () {
+                                tagGet.classList.remove("tag-state-0")
+                                tagGet.classList.remove("tag-state-1")
+                                tagGet.classList.remove("tag-state-2")
+
+                                click += 1;
+                                if (click % 3 == 0) {
+                                    tagGet.classList.add("tag-state-0");
+                                }
+                                else if (click % 3 == 1) {
+                                    tagGet.classList.add("tag-state-1");
+                                }
+                                else if (click % 3 == 2) {
+                                    tagGet.classList.add("tag-state-2");
+                                }
+                            });
+                        })
+                    }
+                    );
+                newCountry = false;
+            }
+            else {
+                var tagsContainer = document.getElementById("partTwo");
+                tagsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         };
 
         var tagsInput = document.getElementsByClassName("tags-input");
@@ -193,25 +205,28 @@
                 if (input.checked) {
                     values.push(input.value)
                 }
+                input.style.pointerEvents = "none";
             }
             for (const input of tagsPosInput) {
                 posVals.push(input.innerText)
+                input.style.pointerEvents = "none";
             }
             for (const input of tagsNegInput) {
                 negVals.push(input.innerText)
+                input.style.pointerEvents = "none";
             }
-            
+
             // console.log(values, tagsPosInput, tagsNegInput)
 
             console.log(values, posVals, negVals)
 
-            fetch("/output?" + new URLSearchParams({ tags: values , pos: posVals, neg: negVals }).toString())
+            fetch("/output?" + new URLSearchParams({ tags: values, pos: posVals, neg: negVals }).toString())
                 .then((response) => response.json())
                 .then((list) => {
                     count = 1;
-
+                    document.getElementById("outputBox").innerHTML = '';
                     list.forEach((item) => {
-                        let location =  item[0]
+                        let location = item[0]
                         let url = item[1]
                         let tempDiv = document.createElement("div");
                         tempDiv.innerHTML = outputBoxTemplate(location, count, url);
@@ -227,11 +242,11 @@
 
         function loadHomePage() {
             window.location.href = "/";
-          }
+        }
 
-          window.onbeforeunload = function () {
+        window.onbeforeunload = function () {
             window.scrollTo(0, 0);
-          }
+        }
 
     </script>
 </body>
