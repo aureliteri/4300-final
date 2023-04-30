@@ -13,14 +13,14 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # These are the DB credentials for your OWN MySQL
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
-# MYSQL_USER = "root"
-# MYSQL_USER_PASSWORD = ""
-# MYSQL_PORT = 4534
-# MYSQL_DATABASE = "travellocomotion_db"
 MYSQL_USER = "root"
 MYSQL_USER_PASSWORD = ""
-MYSQL_PORT = 3306
-MYSQL_DATABASE = "atlas_obscura_testing_data"
+MYSQL_PORT = 4534
+MYSQL_DATABASE = "travellocomotion_db"
+# MYSQL_USER = "root"
+# MYSQL_USER_PASSWORD = ""
+# MYSQL_PORT = 3306
+# MYSQL_DATABASE = ""
 
 mysql_engine = MySQLDatabaseHandler(
     MYSQL_USER, MYSQL_USER_PASSWORD, MYSQL_PORT, MYSQL_DATABASE)
@@ -43,10 +43,10 @@ CORS(app)
 
 def sql_search(table_name):
     query_sql = f"""SELECT * FROM {table_name}"""
-    # keys = ["index", "attraction", "location", "blurb",
-    #         "url", "description", "tags", "lemmatized_description"]
-    keys = ["index", "description", "lemmatized_description",
-            "url", "attraction", "location", "blurb"]
+    keys = ["index", "attraction", "location", "blurb",
+            "url", "description", "tags", "lemmatized_description"]
+    # keys = ["index", "description", "lemmatized_description",
+    #         "url", "attraction", "location", "blurb"]
     data = mysql_engine.query_selector(query_sql)
     return [dict(zip(keys, i)) for i in data]
 
@@ -93,11 +93,8 @@ def generate_output():
     pos = pos.strip().split(",")
     neg = neg.strip().split(",")
     tags = tags.strip().split(",")
-    # pos = [x.lower() for x in pos]
-    # print(pos)
-    output_tuple = partTwo.get_top_attractions(partTwo.pmi, pos)
-    output_two = partTwo.get_top_attractions_w_neg(partTwo.pmi, pos, neg)
-    output = [(location, url) for score, location, url in output_two]
+    output_tuple = partTwo.get_top_attractions_w_neg(partTwo.pmi, pos, neg)
+    output = [(location, url) for score, location, url in output_tuple]
     print(output)
     return output
 
@@ -112,4 +109,4 @@ def landing():
     return render_template('landing.html', title="landing")
 
 
-#app.run(debug=True)
+# app.run(debug=True)
