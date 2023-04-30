@@ -79,3 +79,26 @@ class PartTwo:
         output = sorted(scores, key=lambda x: x[0], reverse=True)[:10]
         print("Destinations to visit:")
         return output
+
+    def get_top_attractions_w_neg(self, sim_mat, pos_tags, neg_tags):
+        word_to_index, words_compressed_normed = self.svd()
+        scores = []
+        for destination in self._array_with_country:
+            description = destination["lemmatized_description"].lower()
+            split_description = set(description.split())
+            score = 0
+            for tag in pos_tags:
+                tag = tag.lower()
+                most_similar_words = set(
+                    [x[0] for x in self.find_similar_with_svd(tag, word_to_index, words_compressed_normed)])
+                score += len(list(split_description.intersection(most_similar_words)))
+            for tag in neg_tags:
+                tag = tag.lower()
+                most_similar_words = set(
+                    [x[0] for x in self.find_similar_with_svd(tag, word_to_index, words_compressed_normed)])
+                score -= 0.3*len(list(split_description.intersection(most_similar_words)))          
+            scores.append(
+                tuple((score, destination["attraction"], destination["url"])))
+        output = sorted(scores, key=lambda x: x[0], reverse=True)[:10]
+        print("Destinations to visit:")
+        return output
