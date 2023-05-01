@@ -339,3 +339,9 @@ input[type=checkbox]+label:hover {
 #outputBox i {
     margin-top: -100px;
 }
+
+.feedback {
+    margin-top: -10px;
+    color: #D1593D;
+    font-size: 20px;
+}

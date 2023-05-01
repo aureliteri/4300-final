@@ -21,6 +21,7 @@
 
         <div class="part-1" id="partOne">
             <h2> What is your favorite destination?</h2>
+            <h4 id="countryFeedback" class="feedback hidden">Please select a country from the dropdown.</h4>
 
             <div id="countryChosen">
                 <div class="country-box">
@@ -112,6 +113,7 @@
             })
 
 
+
         function ac(value) {
             document.getElementById('datalist').innerHTML = '';
 
@@ -141,53 +143,59 @@
         var countriesSubmit = document.getElementById("submitCountries");
         var newCountry = true;
         countriesSubmit.onclick = function () {
-            if (newCountry) {
-                console.log(countryInput.value);
+            if (tags.includes(countryInput.value)) {
+                if (newCountry) {
+                    console.log(countryInput.value);
 
-                var tagsContainer = document.getElementById("partTwo");
-                tagsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    var tagsContainer = document.getElementById("partTwo");
+                    tagsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-                document.getElementById("partTwo").classList.remove("hidden");
-                document.getElementById("countryEditing").remove();
-                document.getElementById("editCountry").disabled = true;
-                document.getElementById("editCountry").style.pointerEvents = "none";
-                document.getElementById("body").style.overflow = "visible";
+                    document.getElementById("partTwo").classList.remove("hidden");
+                    document.getElementById("countryEditing").remove();
+                    document.getElementById("editCountry").disabled = true;
+                    document.getElementById("editCountry").style.pointerEvents = "none";
+                    document.getElementById("body").style.overflow = "visible";
 
-                fetch("/countries?" + new URLSearchParams({ countries: countryInput.value }).toString().toLowerCase())
-                    .then((response) => response.json())
-                    .then((d) => {
-                        d.forEach(tag => {
-                            let tempDiv = document.createElement("div")
-                            tempDiv.innerHTML = tagBoxTemplate(tag)
-                            document.getElementById("tags-checker").appendChild(tempDiv)
+                    fetch("/countries?" + new URLSearchParams({ countries: countryInput.value }).toString().toLowerCase())
+                        .then((response) => response.json())
+                        .then((d) => {
+                            d.forEach(tag => {
+                                let tempDiv = document.createElement("div")
+                                tempDiv.innerHTML = tagBoxTemplate(tag)
+                                document.getElementById("tags-checker").appendChild(tempDiv)
 
-                            var tagGet = document.getElementById(String("tag-" + tag))
-                            let click = 0;
+                                var tagGet = document.getElementById(String("tag-" + tag))
+                                let click = 0;
 
-                            tagGet.addEventListener("click", function () {
-                                tagGet.classList.remove("tag-state-0")
-                                tagGet.classList.remove("tag-state-1")
-                                tagGet.classList.remove("tag-state-2")
+                                tagGet.addEventListener("click", function () {
+                                    tagGet.classList.remove("tag-state-0")
+                                    tagGet.classList.remove("tag-state-1")
+                                    tagGet.classList.remove("tag-state-2")
 
-                                click += 1;
-                                if (click % 3 == 0) {
-                                    tagGet.classList.add("tag-state-0");
-                                }
-                                else if (click % 3 == 1) {
-                                    tagGet.classList.add("tag-state-1");
-                                }
-                                else if (click % 3 == 2) {
-                                    tagGet.classList.add("tag-state-2");
-                                }
-                            });
-                        })
-                    }
-                    );
-                newCountry = false;
+                                    click += 1;
+                                    if (click % 3 == 0) {
+                                        tagGet.classList.add("tag-state-0");
+                                    }
+                                    else if (click % 3 == 1) {
+                                        tagGet.classList.add("tag-state-1");
+                                    }
+                                    else if (click % 3 == 2) {
+                                        tagGet.classList.add("tag-state-2");
+                                    }
+                                });
+                            })
+                        }
+                        );
+                    newCountry = false;
+                    document.getElementById("countryFeedback").classList.add("hidden");
+                }
+                else {
+                    var tagsContainer = document.getElementById("partTwo");
+                    tagsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
             }
             else {
-                var tagsContainer = document.getElementById("partTwo");
-                tagsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                document.getElementById("countryFeedback").classList.remove("hidden");
             }
         };
 
