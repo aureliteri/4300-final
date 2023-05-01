@@ -57,6 +57,14 @@ h2 {
     text-shadow: -3px 3px 0px #48A369;
 }
 
+.fa-circle-info {
+    font-size: 20px;
+    text-shadow: none;
+    margin-left: 10px;
+    margin-top: 10px;
+    color: #67AB76;
+}
+
 .countryChosen,
 .countryEditing {
     display: flex;
@@ -344,4 +352,87 @@ input[type=checkbox]+label:hover {
     margin-top: -10px;
     color: #D1593D;
     font-size: 20px;
+    font-family: 'Roboto';
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    align-self: center;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #D3924D;
+    color: #fff;
+    padding: 10px;
+    border-radius: 6px;
+
+    margin-top: -35px;
+    margin-left: 15px;
+    position: absolute;
+    z-index: 1;
+
+    font-size: 12px;
+    font-family: 'Roboto';
+    line-height: normal;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.tooltip .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #D3924D transparent transparent;
+}
+
+.tooltip2 {
+    position: relative;
+    display: inline-block;
+    align-self: center;
+    color: #C9290E;
+}
+
+/* Tooltip text */
+.tooltip2 .tooltiptext2 {
+    visibility: hidden;
+    width: 120px;
+    background-color: #D3924D;
+    color: #fff;
+    padding: 10px;
+    border-radius: 6px;
+
+    margin-top: -40px;
+    margin-left: 15px;
+    position: absolute;
+    z-index: 1;
+
+    font-size: 12px;
+    font-family: 'Roboto';
+    line-height: normal;
+}
+
+.tooltip2:hover .tooltiptext2 {
+    visibility: visible;
+}
+
+.tooltip2 .tooltiptext2::after {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #D3924D transparent transparent;
 }
