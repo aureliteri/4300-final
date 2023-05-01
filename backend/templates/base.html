@@ -156,6 +156,13 @@
                     document.getElementById("editCountry").style.pointerEvents = "none";
                     document.getElementById("body").style.overflow = "visible";
 
+
+                    var countryChosenView = document.getElementById("countryChosen");
+                    countryChosenView.classList.remove("hidden");
+
+                    var countryText = document.getElementById("chosenCountry");
+                    countryText.innerHTML = countryInput.value;
+
                     fetch("/countries?" + new URLSearchParams({ countries: countryInput.value }).toString().toLowerCase())
                         .then((response) => response.json())
                         .then((d) => {
