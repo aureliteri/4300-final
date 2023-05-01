@@ -184,15 +184,6 @@ textarea {
     height: 100vh;
 }
 
-/* .part-2,
-.part-3 {
-    margin-top: 400px;
-} */
-
-/* .part-3 {
-    margin-bottom: 300px;
-} */
-
 .part-2 {
     margin-bottom: -1000px;
 }
@@ -347,9 +338,4 @@ input[type=checkbox]+label:hover {
 
 #outputBox i {
     margin-top: -100px;
-}
-
-fieldset {
-    border: none;
-    padding: 0;
 }
