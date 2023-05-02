@@ -129,7 +129,7 @@
                 if (((tags[i].toLowerCase()).indexOf(value.toLowerCase())) > -1) {
 
                     var node = document.createElement("option");
-                    var val = document.createTextNode(tags[i]);
+                    var val = document.createTextNode(tags[i].toUpperCase());
                     node.appendChild(val);
 
                     document.getElementById("datalist").appendChild(node);
@@ -150,7 +150,7 @@
         var countriesSubmit = document.getElementById("submitCountries");
         var newCountry = true;
         countriesSubmit.onclick = function () {
-            if (tags.includes(countryInput.value)) {
+            if (tags.includes(countryInput.value.toLowerCase())) {
                 if (newCountry) {
                     console.log(countryInput.value);
 
@@ -209,6 +209,7 @@
                 }
             }
             else {
+                console.log(countryInput.value);
                 document.getElementById("countryFeedback").classList.remove("hidden");
             }
         };
