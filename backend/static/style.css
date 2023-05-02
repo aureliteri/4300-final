@@ -39,6 +39,10 @@ h1 {
     text-transform: uppercase;
 }
 
+.reset:hover {
+    cursor: pointer;
+}
+
 h1:hover {
     cursor: pointer;
 }
